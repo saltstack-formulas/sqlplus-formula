@@ -1,0 +1,18 @@
+LOCAL =
+  (DESCRIPTION =
+       (ADDRESS = (PROTOCOL = TCP)(HOST = localhost)(PORT = 1524))
+       (CONNECT_DATA =
+         (SERVICE_NAME = mydb1)
+         (INSTANCE_NAME = mydb1)
+       )
+  )
+
+DMASSUP =
+  (DESCRIPTION =
+       (ADDRESS = (PROTOCOL = TCP)(HOST = mydb2db01)(PORT = 1521))
+       (CONNECT_DATA =
+         (SERVICE_NAME = mydb2)
+         (INSTANCE_NAME = mydb2)
+       )
+  )
+

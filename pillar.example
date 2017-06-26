@@ -1,0 +1,18 @@
+sqlplus_home: /opt/sqlplus
+sqlplus:
+  release: 12
+  minor: 2
+  version: 12.2.0.1.0
+  source_url1: http://download.oracle.com/otn/linux/instantclient/122010/instantclient-basic-linux.x64-12.2.0.1.0.zip
+  source_url2: http://download.oracle.com/otn/linux/instantclient/122010/instantclient-devel-linux.x64-12.2.0.1.0.zip
+  source_url3: http://download.oracle.com/otn/linux/instantclient/122010/instantclient-sqlplus-linux.x64-12.2.0.1.0.zip
+  source_hash1: http://download.oracle.com/otn/linux/instantclient/122010/instantclient-basic-linux.x64-12.2.0.1.0.zip.sha256
+  source_hash2: http://download.oracle.com/otn/linux/instantclient/122010/instantclient-devel-linux.x64-12.2.0.1.0.zip.sha256
+  source_hash3: http://download.oracle.com/otn/linux/instantclient/122010/instantclient-sqlplus-linux.x64-12.2.0.1.0.zip.sha256
+  dl_opts:  --no-check-certificate --no-cookies --header "Cookie: oraclelicense=accept-securebackup-cookie"
+  prefix: /usr/share/oracle
+  sqlplus_symlink: /usr/bin/sqlplus
+  sqlplus_realcmd: /opt/sqlplus/sqlplus
+  sqlplus_real_home: /usr/share/oracle/sqlplus
+  archive_type: zip
+  unpack_opts:
