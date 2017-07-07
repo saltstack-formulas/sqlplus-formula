@@ -1,3 +1,5 @@
 {%- from 'sqlplus/settings.sls' import sqlplus with context %}
-export SQLPLUS_HOME={{ sqlplus.sqlplus_home }}
-export PATH=$SQLPLUS_HOME:$PATH
+
+export ORACLE_HOME={{ sqlplus.prefix }}
+export SQLPLUS_HOME={{ sqlplus.orahome }}/instantclient
+export PATH=${ORACLE_HOME}:${SQLPLUS_HOME}:$PATH
