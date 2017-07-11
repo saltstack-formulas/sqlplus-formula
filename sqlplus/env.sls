@@ -10,6 +10,7 @@ sqlplus-config:
     - group: root
     - context:
       orahome: {{ sqlplus.orahome }}/sqlplus
+      prefix: {{ sqlplus.prefix }}
     - require:
       - sqlplus-update-home-symlink
 
