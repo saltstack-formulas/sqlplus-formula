@@ -43,10 +43,6 @@ sqlplus-download-instantclient-devel-archive:
 sqlplus-unpack-instantclient-basic-archive:
   file.absent:
     - name: {{ sqlplus.sqlplus_real_home }}
-    - require:
-      - sqlplus-download-instantclient-basic-archive
-      - sqlplus-download-instantclient-sqlplus-archive
-      - sqlplus-download-instantclient-devel-archive
   archive.extracted:
     - name: {{ sqlplus.prefix }}
     - source: file://{{ archive_file1 }}
@@ -58,7 +54,7 @@ sqlplus-unpack-instantclient-basic-archive:
     - user: root
     - group: root
     - require:
-      - file: sqlplus-unpack-instantclient-basic-archive
+      - sqlplus-download-instantclient-basic-archive
 
 sqlplus-unpack-instantclient-sqlplus-archive:
   archive.extracted:
@@ -72,9 +68,7 @@ sqlplus-unpack-instantclient-sqlplus-archive:
     - user: root
     - group: root
     - require:
-      - sqlplus-download-instantclient-basic-archive
       - sqlplus-download-instantclient-sqlplus-archive
-      - sqlplus-download-instantclient-devel-archive
 
 sqlplus-unpack-instantclient-devel-archive:
   archive.extracted:
@@ -88,8 +82,6 @@ sqlplus-unpack-instantclient-devel-archive:
     - user: root
     - group: root
     - require:
-      - sqlplus-download-instantclient-basic-archive
-      - sqlplus-download-instantclient-sqlplus-archive
       - sqlplus-download-instantclient-devel-archive
 
 sqlplus-update-home-symlink:
@@ -104,19 +96,27 @@ sqlplus-update-home-symlink:
     - target: {{ sqlplus.sqlplus_real_home }}
     - force: True
     - require:
-       - cmd: sqlplus-update-home-symlink
+      - cmd: sqlplus-update-home-symlink
 
-sqlplus-remove-instantclient-basic-archive:
-  file.absent:
-    - name: {{ archive_file1 }}
+#### Example requiring 'user' definition in pillar ##
+sqlplus-desktop-entry:
+  file.managed:
+    - source: salt://sqlplus/files/sqlplus.desktop
+    - name: /home/{{ pillar['user'] }}/Desktop/sqlplus.desktop
+    - user: {{ pillar['user'] }}
+    - group: {{ pillar['user'] }}
+    - mode: 755
+    - require:
+      - file: sqlplus-update-home-symlink
 
-sqlplus-remove-instantclient-sqlplus-archive:
+sqlplus-remove-instantclient-archives:
   file.absent:
-    - name: {{ archive_file2 }}
-
-sqlplus-remove-instantclient-devel-archive:
-  file.absent:
-    - name: {{ archive_file3 }}
+    - names:
+      - {{ archive_file1 }}
+      - {{ archive_file2 }}
+      - {{ archive_file3 }}
+    - require:
+      - file: sqlplus-update-home-symlink
 
 include:
   - sqlplus.env
