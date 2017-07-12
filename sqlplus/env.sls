@@ -3,23 +3,26 @@
 sqlplus-config:
   file.managed:
     - name: /etc/profile.d/sqlplus.sh
-    - source: salt://sqlplus/sqlplus.sh
+    - source: salt://sqlplus/files/sqlplus.sh
     - template: jinja
     - mode: 644
     - user: root
     - group: root
     - context:
-      sqlplus_home: {{ sqlplus.sqlplus_home }}
+      orahome: {{ sqlplus.orahome }}/sqlplus
+      prefix: {{ sqlplus.prefix }}
+    - require:
+      - sqlplus-update-home-symlink
 
 # Add sqlplus to alternatives system
 sqlplushome-alt-install:
   alternatives.install:
     - name: sqlplus-home
-    - link: {{ sqlplus.sqlplus_home }}
+    - link: {{ sqlplus.orahome }}/sqlplus
     - path: {{ sqlplus.sqlplus_real_home }}
     - priority: 30
     - require:
-      - update-sqlplus-home-symlink
+      - sqlplus-update-home-symlink
 
 sqlplus-alt-install:
   alternatives.install:
@@ -27,16 +30,16 @@ sqlplus-alt-install:
     - link: {{ sqlplus.sqlplus_symlink }}
     - path: {{ sqlplus.sqlplus_realcmd }}
     - priority: 30
-    - onlyif: test -d {{ sqlplus.sqlplus_real_home }} && test ! -L {{ sqlplus.sqlplus_home }}
+    - onlyif: test -d {{ sqlplus.sqlplus_real_home }}
     - require:
-      - update-sqlplus-home-symlink
+      - sqlplus-update-home-symlink
 
 # Set sqlplus alternatives
 sqlplushome-alt-set:
   alternatives.set:
   - name: sqlplus-home
   - path: {{ sqlplus.sqlplus_real_home }}
-  - onchanges:
+  - require:
     - sqlplushome-alt-install
 
 sqlplus-alt-set:
@@ -52,13 +55,16 @@ source_sqlplus_file:
   - name: source /etc/profile
   - cwd: /root
   - require:
-    - update-sqlplus-home-symlink
+    - sqlplus-update-home-symlink
 
 create our /etc/tnsnames.ora:
   file.managed:
     - name: /etc/tnsnames.ora
-    - source: salt://sqlplus/tnsnames.ora
+    - backup: 'saltbak'
+    - source: salt://sqlplus/files/tnsnames.ora
     - mode: 644
     - user: root
     - group: root
+    - require:
+      - sqlplus-update-home-symlink
 

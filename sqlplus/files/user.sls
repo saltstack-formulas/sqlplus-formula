@@ -1,14 +1,6 @@
 
-#### TODO: IS THIS NEEDED OR NOT?
-
-sqlplus-libaio1:
-  pkg.installed
-    - name: libaio1
-
-sqlplus-tnsnames-ora:
-  file.managed:
-    - name: /etc/tnsnames.ora:
-    - source: salt://sqlplus/tnsnames.ora
+##TODO: THINK THIS IS NOT NEEDED (USING LD_LIBRARY_PATH INSTEAD)
+##Remove this file if states below are not needed
 
 sqlplus-oracle-conf:
   file.managed:
