@@ -3,7 +3,7 @@
 sqlplus-config:
   file.managed:
     - name: /etc/profile.d/sqlplus.sh
-    - source: salt://sqlplus/sqlplus.sh
+    - source: salt://sqlplus/files/sqlplus.sh
     - template: jinja
     - mode: 644
     - user: root
@@ -61,7 +61,7 @@ create our /etc/tnsnames.ora:
   file.managed:
     - name: /etc/tnsnames.ora
     - backup: 'saltbak'
-    - source: salt://sqlplus/tnsnames.ora
+    - source: salt://sqlplus/files/tnsnames.ora
     - mode: 644
     - user: root
     - group: root
