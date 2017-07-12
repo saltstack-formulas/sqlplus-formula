@@ -14,7 +14,7 @@ sqlplus:
   prefix: /usr/share/oracle/12_2
   sqlplus_symlink: /usr/bin/sqlplus
   sqlplus_realcmd: /opt/oracle/12_2/sqlplus/bin/sqlplus
-  sqlplus_real_home: /usr/share/oracle/12_2/instantclient
   archive_type: zip
   unpack_opts:
   sqlplus_unpackdir: /usr/share/oracle/12_2/instantclient_12_2
+  sqlplus_real_home: /usr/share/oracle/12_2/instantclient
