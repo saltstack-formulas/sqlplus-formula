@@ -1,0 +1,8 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=SQL Plus
+Comment=Oracle SQL Plus
+Icon=/opt/sqlplus/icon.png
+Exec=sqlplus
+Terminal=false
+Type=Application
