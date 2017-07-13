@@ -19,19 +19,15 @@ Available states
 ---------
 
 Downloads zip archives from **sqlplus:source_url** and unpacks them.
-
 - instantclient-basic-linux.x64
 - instantclient-sdk-linux.x64
 - instantclient-devel-linux.x64
 
-The formula also configures an alternatives path. The default vendor source URL requires credentials as download arguments.
-
-- The current default is **sqlplus:version** of 12.2 
-
 ``sqlplus.env``
 -------------
 
-Adds /etc/profile.d/sqlplus.sh, this includesd SQLPLUS__HOME in the PATH of any user.
+Full support for linux alternatives system. Add /etc/profile.d/sqlplus.sh to include SQLPLUS_HOME,
+LD_LIBRARY_PATH, and SQLPLUS_HOME/bin. Create a tnsnames.ora file.
 
 Please see the pillar.example for configuration.
 
