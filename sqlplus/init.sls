@@ -47,10 +47,9 @@ sqlplus-unpack-instantclient-basic-archive:
     - name: {{ sqlplus.prefix }}
     - source: file://{{ archive_file1 }}
     {%- if sqlplus.source_hash1 %}
-    - source_hash: md5={{ sqlplus.source_hash1 }}
+    - source_hash: {{ sqlplus.source_hash1 }}
     {%- endif %}
     - archive_format: {{ sqlplus.archive_type }}
-    - options: {{ sqlplus.unpack_opts }}
     - user: root
     - group: root
     - require:
@@ -61,10 +60,9 @@ sqlplus-unpack-instantclient-sqlplus-archive:
     - name: {{ sqlplus.prefix }}
     - source: file://{{ archive_file2 }}
     {%- if sqlplus.source_hash2 %}
-    - source_hash: md5={{ sqlplus.source_hash2 }}
+    - source_hash: {{ sqlplus.source_hash2 }}
     {%- endif %}
     - archive_format: {{ sqlplus.archive_type }}
-    - options: {{ sqlplus.unpack_opts }}
     - user: root
     - group: root
     - require:
@@ -75,10 +73,9 @@ sqlplus-unpack-instantclient-devel-archive:
     - name: {{ sqlplus.prefix }}
     - source: file://{{ archive_file3 }}
     {%- if sqlplus.source_hash3 %}
-    - source_hash: md5={{ sqlplus.source_hash3 }}
+    - source_hash: {{ sqlplus.source_hash3 }}
     {%- endif %}
     - archive_format: {{ sqlplus.archive_type }}
-    - options: {{ sqlplus.unpack_opts }}
     - user: root
     - group: root
     - require:
@@ -98,7 +95,6 @@ sqlplus-update-home-symlink:
     - require:
       - cmd: sqlplus-update-home-symlink
 
-#### Example requiring 'user' definition in pillar ##
 sqlplus-desktop-entry:
   file.managed:
     - source: salt://sqlplus/files/sqlplus.desktop
@@ -116,9 +112,8 @@ sqlplus-remove-instantclient-archives:
       - {{ archive_file2 }}
       - {{ archive_file3 }}
     - require:
-      - file: sqlplus-update-home-symlink
-
-include:
-  - sqlplus.env
+      - sqlplus-unpack-instantclient-basic-archive
+      - sqlplus-unpack-instantclient-sqlplus-archive
+      - sqlplus-unpack-instantclient-devel-archive
 
 {%- endif %}
