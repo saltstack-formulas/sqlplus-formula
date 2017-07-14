@@ -18,9 +18,9 @@
 {%- set default_source_url1  = mirror + 'instantclient-basic' + suffix %}
 {%- set default_source_url2  = mirror + 'instantclient-sqlplus' + suffix %}
 {%- set default_source_url3  = mirror + 'instantclient-sdk' + suffix %}
-{%- set default_source_hash1 = 'd9639092e3dea2e023272e52e2bd42da' %}
-{%- set default_source_hash2 = '93ae87df1d08bb31da57443a416edc8c' %}
-{%- set default_source_hash3 = '077fa2f215185377ccb670de9ca1678f' %}
+{%- set default_source_hash1 = 'md5=d9639092e3dea2e023272e52e2bd42da' %}
+{%- set default_source_hash2 = 'md5=93ae87df1d08bb31da57443a416edc8c' %}
+{%- set default_source_hash3 = 'md5=077fa2f215185377ccb670de9ca1678f' %}
 
 {%- set source_url1    = g.get('source_url1', p.get('source_url1', default_source_url1 )) %}
 {%- if source_url1 == default_source_url1 %}
@@ -37,20 +37,20 @@
   {%- set source_hash3 = g.get('source_hash3', p.get('source_hash3', default_source_hash3 )) %}
 {%- endif %}
 
-{%- set default_unpack_opts = '' %}
-{%- set default_dl_opts     = ' -s ' %}
-{%- set default_symlink     = '/usr/bin/sqlplus' %}
-{%- set default_real_home   = default_prefix + sqlplus_name + '/' %}
+{%- set default_alt_priority = '30' %}
+{%- set default_dl_opts      = ' -s ' %}
+{%- set default_symlink      = '/usr/bin/sqlplus' %}
+{%- set default_real_home    = default_prefix + sqlplus_name + '/' %}
+{%- set default_realcmd      = default_real_home + '/sqlplus' %}
 
-{%- set prefix            = g.get('prefix', p.get('prefix', default_prefix )) %}
-{%- set dl_opts           = g.get('dl_opts', p.get('dl_opts', default_dl_opts)) %}
-{%- set unpack_opts       = g.get('unpack_opts', p.get('unpack_opts', default_unpack_opts )) %}
-{%- set archive_type      = g.get('archive_type', p.get('archive_type', default_archive_type )) %}
-{%- set sqlplus_symlink   = g.get('symlink', p.get('symlink', default_symlink )) %}
-{%- set sqlplus_real_home = g.get('real_home', p.get('real_home', default_real_home )) %}
-{%- set sqlplus_unpackdir = g.get('unpackdir', p.get('unpackdir', prefix + sqlplus_name + '_' + oracle_release )) %}
-
-{%- set sqlplus_realcmd   = sqlplus_real_home + '/sqlplus' %}
+{%- set prefix               = g.get('prefix', p.get('prefix', default_prefix )) %}
+{%- set dl_opts              = g.get('dl_opts', p.get('dl_opts', default_dl_opts)) %}
+{%- set archive_type         = g.get('archive_type', p.get('archive_type', default_archive_type )) %}
+{%- set sqlplus_symlink      = g.get('symlink', p.get('symlink', default_symlink )) %}
+{%- set sqlplus_real_home    = g.get('real_home', p.get('real_home', default_real_home )) %}
+{%- set sqlplus_unpackdir    = g.get('unpackdir', p.get('unpackdir', prefix + sqlplus_name + '_' + oracle_release )) %}
+{%- set sqlplus_realcmd      = g.get('realcmd', p.get('realcmd', default_realcmd )) %}
+{%- set alt_priority         = g.get('alt_priority', p.get('alt_priority', default_alt_priority )) %}
 
 {%- set sqlplus = {} %}
 {%- do sqlplus.update( {  'release'          : release,
@@ -64,11 +64,11 @@
                           'source_hash3'     : source_hash3,
                           'orahome'          : orahome,
                           'dl_opts'          : dl_opts,
-                          'unpack_opts'      : unpack_opts,
                           'archive_type'     : archive_type,
                           'prefix'           : prefix,
                           'sqlplus_real_home': sqlplus_real_home,
                           'sqlplus_symlink'  : sqlplus_symlink,
                           'sqlplus_realcmd'  : sqlplus_realcmd,
                           'sqlplus_unpackdir': sqlplus_unpackdir,
+                          'alt_priority'     : alt_priority,
                      }) %}
