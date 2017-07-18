@@ -8,9 +8,14 @@
   {%- set archive_file2 = sqlplus.prefix + '/' + sqlplus.source_url2.split('/') | last %}
   {%- set archive_file3 = sqlplus.prefix + '/' + sqlplus.source_url3.split('/') | last %}
 
+#runtime dependency
 sqlplus-libaio1:
   pkg.installed:
+    {%- if salt['grains.get']('os') == 'Ubuntu' %}
     - name: libaio1
+    {%- else %}
+    - name: libaio
+    {%- endif %}
 
 sqlplus-install-dir:
   file.directory:
