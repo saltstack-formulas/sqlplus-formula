@@ -105,7 +105,11 @@ sqlplus-desktop-entry:
     - source: salt://sqlplus/files/sqlplus.desktop
     - name: /home/{{ pillar['user'] }}/Desktop/sqlplus.desktop
     - user: {{ pillar['user'] }}
+{% if salt['grains.get']('os_family') == 'Suse' %}
+    - group: users
+{% else %}
     - group: {{ pillar['user'] }}
+{% endif %}
     - mode: 755
     - require:
       - file: sqlplus-update-home-symlink
