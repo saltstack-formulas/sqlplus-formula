@@ -11,7 +11,7 @@
 #runtime dependency
 sqlplus-libaio1:
   pkg.installed:
-    {%- if salt['grains.get']('os') == 'Ubuntu' %}
+    {%- if salt['grains.get']('os') == 'Ubuntu' or salt['grains.get']('os') == 'SUSE' %}
     - name: libaio1
     {%- else %}
     - name: libaio
@@ -54,11 +54,12 @@ sqlplus-unpack-instantclient-basic-archive:
     {%- if sqlplus.source_hash1 %}
     - source_hash: {{ sqlplus.source_hash1 }}
     {%- endif %}
+    {% if grains['saltversioninfo'] < [2016, 11, 0] %}
+    - if_missing: {{ sqlplus.sqlplus_realcmd }}
+    {% endif %}
     - archive_format: {{ sqlplus.archive_type }}
-    - user: root
-    - group: root
     - require:
-      - sqlplus-download-instantclient-basic-archive
+      - cmd: sqlplus-download-instantclient-basic-archive
 
 sqlplus-unpack-instantclient-sqlplus-archive:
   archive.extracted:
@@ -67,11 +68,12 @@ sqlplus-unpack-instantclient-sqlplus-archive:
     {%- if sqlplus.source_hash2 %}
     - source_hash: {{ sqlplus.source_hash2 }}
     {%- endif %}
+    {% if grains['saltversioninfo'] < [2016, 11, 0] %}
+    - if_missing: {{ sqlplus.sqlplus_realcmd }}
+    {% endif %}
     - archive_format: {{ sqlplus.archive_type }}
-    - user: root
-    - group: root
     - require:
-      - sqlplus-download-instantclient-sqlplus-archive
+      - cmd: sqlplus-download-instantclient-sqlplus-archive
 
 sqlplus-unpack-instantclient-devel-archive:
   archive.extracted:
@@ -80,19 +82,20 @@ sqlplus-unpack-instantclient-devel-archive:
     {%- if sqlplus.source_hash3 %}
     - source_hash: {{ sqlplus.source_hash3 }}
     {%- endif %}
+    {% if grains['saltversioninfo'] < [2016, 11, 0] %}
+    - if_missing: {{ sqlplus.sqlplus_realcmd }}
+    {% endif %}
     - archive_format: {{ sqlplus.archive_type }}
-    - user: root
-    - group: root
     - require:
-      - sqlplus-download-instantclient-devel-archive
+      - cmd: sqlplus-download-instantclient-devel-archive
 
 sqlplus-update-home-symlink:
   cmd.run:
     - name: mv {{ sqlplus.sqlplus_unpackdir }} {{ sqlplus.sqlplus_real_home }}
     - require:
-      - sqlplus-unpack-instantclient-basic-archive
-      - sqlplus-unpack-instantclient-sqlplus-archive
-      - sqlplus-unpack-instantclient-devel-archive
+      - archive: sqlplus-unpack-instantclient-basic-archive
+      - archive: sqlplus-unpack-instantclient-sqlplus-archive
+      - archive: sqlplus-unpack-instantclient-devel-archive
   file.symlink:
     - name: {{ sqlplus.orahome }}/sqlplus
     - target: {{ sqlplus.sqlplus_real_home }}
@@ -105,7 +108,7 @@ sqlplus-desktop-entry:
     - source: salt://sqlplus/files/sqlplus.desktop
     - name: /home/{{ pillar['user'] }}/Desktop/sqlplus.desktop
     - user: {{ pillar['user'] }}
-{% if salt['grains.get']('os_family') == 'Suse' %}
+{% if salt['grains.get']('os_family') == 'Suse' or salt['grains.get']('os') == 'SUSE'%}
     - group: users
 {% else %}
     - group: {{ pillar['user'] }}
@@ -121,8 +124,8 @@ sqlplus-remove-instantclient-archives:
       - {{ archive_file2 }}
       - {{ archive_file3 }}
     - require:
-      - sqlplus-unpack-instantclient-basic-archive
-      - sqlplus-unpack-instantclient-sqlplus-archive
-      - sqlplus-unpack-instantclient-devel-archive
+      - archive: sqlplus-unpack-instantclient-basic-archive
+      - archive: sqlplus-unpack-instantclient-sqlplus-archive
+      - archive: sqlplus-unpack-instantclient-devel-archive
 
 {%- endif %}
