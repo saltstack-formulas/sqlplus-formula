@@ -25,7 +25,7 @@ sqlplushome-alt-set:
   - name: sqlplus-home
   - path: {{ sqlplus.sqlplus_real_home }}
   - require:
-    - sqlplushome-alt-install
+    - alternatives: sqlplushome-alt-install
 
 # Add sqlplus to alternatives system
 sqlplus-alt-install:
@@ -35,14 +35,14 @@ sqlplus-alt-install:
     - path: {{ sqlplus.sqlplus_realcmd }}
     - priority: {{ sqlplus.alt_priority }}
     - require:
-      - sqlplushome-alt-set
+      - alternatives: sqlplushome-alt-set
 
 sqlplus-alt-set:
   alternatives.set:
   - name: sqlplus
   - path: {{ sqlplus.sqlplus_realcmd }}
   - require:
-    - sqlplus-alt-install
+    - alternatives: sqlplus-alt-install
 
 create /etc/tnsnames.ora:
   file.managed:
@@ -53,5 +53,5 @@ create /etc/tnsnames.ora:
     - user: root
     - group: root
     - require:
-      - sqlplus-alt-set
+      - alternatives: sqlplus-alt-set
 
