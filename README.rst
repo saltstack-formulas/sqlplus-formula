@@ -4,7 +4,11 @@ sqlplus-formula
 
 This formula will set up and configure Oracle SqlPlus client sourced from URL.
 
-.. note::
+.. note1::
+
+   The SOURCE URI in settings.sls must be updated with your internal mirror.
+
+.. note2::
 
     See the full `Salt Formulas installation and usage instructions
     <http://docs.saltstack.com/en/latest/topics/development/conventions/formulas.html>`_.
