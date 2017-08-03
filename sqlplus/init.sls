@@ -58,8 +58,6 @@ sqlplus-unpack-instantclient-basic-archive:
     - if_missing: {{ sqlplus.sqlplus_realcmd }}
     {% endif %}
     - archive_format: {{ sqlplus.archive_type }}
-    - require:
-      - cmd: sqlplus-download-instantclient-basic-archive
     - onchanges:
       - cmd: sqlplus-download-instantclient-basic-archive
 
@@ -74,8 +72,6 @@ sqlplus-unpack-instantclient-sqlplus-archive:
     - if_missing: {{ sqlplus.sqlplus_realcmd }}
     {% endif %}
     - archive_format: {{ sqlplus.archive_type }}
-    - require:
-      - cmd: sqlplus-download-instantclient-sqlplus-archive
     - onchanges:
       - cmd: sqlplus-download-instantclient-sqlplus-archive
 
@@ -90,18 +86,12 @@ sqlplus-unpack-instantclient-devel-archive:
     - if_missing: {{ sqlplus.sqlplus_realcmd }}
     {% endif %}
     - archive_format: {{ sqlplus.archive_type }}
-    - require:
-      - cmd: sqlplus-download-instantclient-devel-archive
     - onchanges:
       - cmd: sqlplus-download-instantclient-devel-archive
 
 sqlplus-update-home-symlink:
   cmd.run:
     - name: mv {{ sqlplus.sqlplus_unpackdir }} {{ sqlplus.sqlplus_real_home }}
-    - require:
-      - archive: sqlplus-unpack-instantclient-basic-archive
-      - archive: sqlplus-unpack-instantclient-sqlplus-archive
-      - archive: sqlplus-unpack-instantclient-devel-archive
     - onchanges:
       - archive: sqlplus-unpack-instantclient-basic-archive
       - archive: sqlplus-unpack-instantclient-sqlplus-archive
@@ -110,8 +100,6 @@ sqlplus-update-home-symlink:
     - name: {{ sqlplus.orahome }}/sqlplus
     - target: {{ sqlplus.sqlplus_real_home }}
     - force: True
-    - require:
-      - cmd: sqlplus-update-home-symlink
     - onchanges:
       - cmd: sqlplus-update-home-symlink
 
