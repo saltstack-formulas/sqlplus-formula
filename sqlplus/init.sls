@@ -60,6 +60,8 @@ sqlplus-unpack-instantclient-basic-archive:
     - archive_format: {{ sqlplus.archive_type }}
     - require:
       - cmd: sqlplus-download-instantclient-basic-archive
+    - onchanges:
+      - cmd: sqlplus-download-instantclient-basic-archive
 
 sqlplus-unpack-instantclient-sqlplus-archive:
   archive.extracted:
@@ -73,6 +75,8 @@ sqlplus-unpack-instantclient-sqlplus-archive:
     {% endif %}
     - archive_format: {{ sqlplus.archive_type }}
     - require:
+      - cmd: sqlplus-download-instantclient-sqlplus-archive
+    - onchanges:
       - cmd: sqlplus-download-instantclient-sqlplus-archive
 
 sqlplus-unpack-instantclient-devel-archive:
@@ -88,6 +92,8 @@ sqlplus-unpack-instantclient-devel-archive:
     - archive_format: {{ sqlplus.archive_type }}
     - require:
       - cmd: sqlplus-download-instantclient-devel-archive
+    - onchanges:
+      - cmd: sqlplus-download-instantclient-devel-archive
 
 sqlplus-update-home-symlink:
   cmd.run:
@@ -101,6 +107,8 @@ sqlplus-update-home-symlink:
     - target: {{ sqlplus.sqlplus_real_home }}
     - force: True
     - require:
+      - cmd: sqlplus-update-home-symlink
+    - onchanges:
       - cmd: sqlplus-update-home-symlink
 
 sqlplus-desktop-entry:
