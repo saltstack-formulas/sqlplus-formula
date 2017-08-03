@@ -102,6 +102,10 @@ sqlplus-update-home-symlink:
       - archive: sqlplus-unpack-instantclient-basic-archive
       - archive: sqlplus-unpack-instantclient-sqlplus-archive
       - archive: sqlplus-unpack-instantclient-devel-archive
+    - onchanges:
+      - archive: sqlplus-unpack-instantclient-basic-archive
+      - archive: sqlplus-unpack-instantclient-sqlplus-archive
+      - archive: sqlplus-unpack-instantclient-devel-archive
   file.symlink:
     - name: {{ sqlplus.orahome }}/sqlplus
     - target: {{ sqlplus.sqlplus_real_home }}
