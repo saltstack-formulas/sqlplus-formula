@@ -103,20 +103,6 @@ sqlplus-update-home-symlink:
     - onchanges:
       - cmd: sqlplus-update-home-symlink
 
-sqlplus-desktop-entry:
-  file.managed:
-    - source: salt://sqlplus/files/sqlplus.desktop
-    - name: /home/{{ pillar['user'] }}/Desktop/sqlplus.desktop
-    - user: {{ pillar['user'] }}
-{% if salt['grains.get']('os_family') == 'Suse' or salt['grains.get']('os') == 'SUSE'%}
-    - group: users
-{% else %}
-    - group: {{ pillar['user'] }}
-{% endif %}
-    - mode: 755
-    - require:
-      - file: sqlplus-update-home-symlink
-
 sqlplus-remove-instantclient-archives:
   file.absent:
     - names:
