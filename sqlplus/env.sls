@@ -26,8 +26,6 @@ sqlplushome-alt-set:
   - path: {{ sqlplus.sqlplus_real_home }}
   - require:
     - alternatives: sqlplushome-alt-install
-  - onchanges:
-    - alternatives: sqlplushome-alt-install
 
 # Add sqlplus to alternatives system
 sqlplus-alt-install:
