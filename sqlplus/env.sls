@@ -24,7 +24,7 @@ sqlplushome-alt-set:
   alternatives.set:
   - name: sqlplus-home
   - path: {{ sqlplus.sqlplus_real_home }}
-  - require:
+  - onchanges:
     - alternatives: sqlplushome-alt-install
 
 # Add sqlplus to alternatives system
@@ -34,8 +34,6 @@ sqlplus-alt-install:
     - link: {{ sqlplus.sqlplus_symlink }}
     - path: {{ sqlplus.sqlplus_realcmd }}
     - priority: {{ sqlplus.alt_priority }}
-    - require:
-      - alternatives: sqlplushome-alt-set
     - onchanges:
       - alternatives: sqlplushome-alt-install
       - alternatives: sqlplushome-alt-set
@@ -44,8 +42,6 @@ sqlplus-alt-set:
   alternatives.set:
   - name: sqlplus
   - path: {{ sqlplus.sqlplus_realcmd }}
-  - require:
-    - alternatives: sqlplus-alt-install
   - onchanges:
     - alternatives: sqlplus-alt-install
 
