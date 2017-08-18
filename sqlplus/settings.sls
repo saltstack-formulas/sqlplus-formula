@@ -9,7 +9,7 @@
 {%- set version      = g.get('version', p.get('version', release + '.' + minor + '.0.1.0' )) %}
 {%- set sqlplus_name = 'instantclient' %}
 
-{# ######## YOU MUST CHANGE TO LOCAL MIRROR DUE TO LICENSE ACCEPTANCE/LOGIN REQ. ####### #}
+{########## YOU MUST CHANGE THIS URL TO YOUR LOCAL MIRROR ####### #}
 {%- set mirror  = 'http://download.oracle.com/otn/linux/instantclient/' + release + minor + '010/' %}
 
 {%- set default_archive_type = 'zip' %}
@@ -18,6 +18,8 @@
 {%- set default_source_url1  = mirror + 'instantclient-basic' + suffix %}
 {%- set default_source_url2  = mirror + 'instantclient-sqlplus' + suffix %}
 {%- set default_source_url3  = mirror + 'instantclient-sdk' + suffix %}
+
+  ##### Hashes for version 12.2 lixux binary zipfile #####
 {%- set default_source_hash1 = 'md5=d9639092e3dea2e023272e52e2bd42da' %}
 {%- set default_source_hash2 = 'md5=93ae87df1d08bb31da57443a416edc8c' %}
 {%- set default_source_hash3 = 'md5=077fa2f215185377ccb670de9ca1678f' %}
