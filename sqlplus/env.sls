@@ -59,4 +59,5 @@ create /etc/tnsnames.ora:
     - mode: 644
     - user: root
     - group: root
+    - if_missing: /etc/tnsnames.ora
 
