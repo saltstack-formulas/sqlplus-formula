@@ -12,6 +12,22 @@ sqlplus-config:
       orahome: {{ sqlplus.orahome }}/sqlplus
       prefix: {{ sqlplus.prefix }}
 
+{%if sqlplus.ldconfig == 'yes' %}
+sqlplus-oracle-conf:
+  file.managed:
+    - name: /etc/ld.so.conf.d/oracle.conf
+    - mkdirs: True
+
+sqlplus-ld-so-conf:
+  file.append:
+    - name: /etc/ld.so.conf.d/oracle.conf:
+    - text: {{ sqlplus.sqlplus_real_home }}/client64/lib
+
+sqlplus-ldconfig:
+  cmd.run
+    - name: ldconfig
+{% endif %}
+
 # Add sqlplus home to alternatives system
 sqlplushome-alt-install:
   alternatives.install:
