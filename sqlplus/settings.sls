@@ -1,14 +1,15 @@
-{% set p  = salt['pillar.get']('sqlplus', {}) %}
+% set p  = salt['pillar.get']('sqlplus', {}) %}
 {% set g  = salt['grains.get']('sqlplus', {}) %}
 
-{%- set ora_release  = g.get('ora_release', p.get('ora_release', '12_2')) %}
-{%- set orahome = salt['grains.get']('orahome', salt['pillar.get']('orahome', '/opt/oracle/' + ora_release + '/')) %}
+{%- set orarelease  = g.get('orarelease', p.get('orarelease', '12_2')) %}
+{%- set orahome = salt['grains.get']('orahome', salt['pillar.get']('orahome', '/opt/oracle/' + orarelease + '/')) %}
 
 {%- set release      = g.get('release', p.get('release', '12')) %}
 {%- set major        = g.get('major', p.get('major', '2')) %}
 {%- set minor        = g.get('minor', p.get('minor', '0')) %}
 {%- set version      = g.get('version', p.get('version', release + '.' + major + '.' + minor + '.1.0' )) %}
 {%- set sqlplus_name = 'instantclient' %}
+{%- set suffix               = '-linux.x64' + '-' + version + '.' + default_archive_type %}
 
 {########## YOU MUST CHANGE THIS URL TO YOUR LOCAL MIRROR ####### #}
 {%- set mirror  = 'http://download.oracle.com/otn/linux/instantclient/' + release + major + minor + '10/' %}
@@ -16,8 +17,7 @@
 {%- set default_ldconfig     = 'no' %}
 {%- set default_tnsnames_url = 'undefined' %}
 {%- set default_archive_type = 'zip' %}
-{%- set default_prefix       = '/usr/share/oracle/' + ora_release + '/' %}
-{%- set suffix               = '-linux.x64' + '-' + version + '.' + default_archive_type %}
+{%- set default_prefix       = '/usr/share/oracle/' + orarelease + '/' %}
 {%- set default_source_url1  = mirror + 'instantclient-basic' + suffix %}
 {%- set default_source_url2  = mirror + 'instantclient-sqlplus' + suffix %}
 {%- set default_source_url3  = mirror + 'instantclient-sdk' + suffix %}
@@ -55,7 +55,7 @@
 {%- set archive_type      = g.get('archive_type', p.get('archive_type', default_archive_type )) %}
 {%- set sqlplus_symlink   = g.get('symlink', p.get('symlink', default_symlink )) %}
 {%- set sqlplus_real_home = g.get('real_home', p.get('real_home', default_real_home )) %}
-{%- set sqlplus_unpackdir = g.get('unpackdir', p.get('unpackdir', prefix + sqlplus_name + '_' + ora_release )) %}
+{%- set sqlplus_unpackdir = g.get('unpackdir', p.get('unpackdir', prefix + sqlplus_name + '_' + orarelease )) %}
 {%- set sqlplus_realcmd   = g.get('realcmd', p.get('realcmd', default_realcmd )) %}
 {%- set alt_priority      = g.get('alt_priority', p.get('alt_priority', default_alt_priority )) %}
 
