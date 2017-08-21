@@ -1,5 +1,5 @@
 orahome: /opt/oracle/12_2/
-oracle_release: 12_2
+orarelease: 12_2
 sqlplus:
   release: 12
   major: 2
