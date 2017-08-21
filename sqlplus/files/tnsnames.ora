@@ -1,89 +1,17 @@
 LOCAL =
   (DESCRIPTION =
-       (ADDRESS = (PROTOCOL = TCP)(HOST = localhost)(PORT = 1524))
+       (ADDRESS = (PROTOCOL = TCP)(HOST = localhost)(PORT = 1521))
        (CONNECT_DATA =
-         (SERVICE_NAME = mydb1)
-         (INSTANCE_NAME = mydb1)
+         (SERVICE_NAME = localdb1)
+         (INSTANCE_NAME = localdb1)
        )
   )
 
-DMASSUP =
+MYDB2 =
   (DESCRIPTION =
-       (ADDRESS = (PROTOCOL = TCP)(HOST = mydb2db01)(PORT = 1521))
+       (ADDRESS = (PROTOCOL = TCP)(HOST = mydb2)(PORT = 1521))
        (CONNECT_DATA =
          (SERVICE_NAME = mydb2)
          (INSTANCE_NAME = mydb2)
        )
   )
-LOCAL =
-  (DESCRIPTION =
-       (ADDRESS = (PROTOCOL = TCP)(HOST = localhost)(PORT = 1524))
-       (CONNECT_DATA =
-         (SERVICE_NAME = ut_shp)
-         (INSTANCE_NAME = ut_shp)
-       )
-  )
-
-DMASSUP =
-  (DESCRIPTION =
-       (ADDRESS = (PROTOCOL = TCP)(HOST = dmassupdb01)(PORT = 1521))
-       (CONNECT_DATA =
-         (SERVICE_NAME = dmassup)
-         (INSTANCE_NAME = dmassup)
-       )
-  )
-
-TMASSUP =
-  (DESCRIPTION =
-       (ADDRESS = (PROTOCOL = TCP)(HOST = tmassupdb01)(PORT = 1521))
-       (CONNECT_DATA =
-         (SERVICE_NAME = tmassup)
-         (INSTANCE_NAME = tmassup)
-       )
-  )
-
-BASE11 =
-  (DESCRIPTION =
-       (ADDRESS = (PROTOCOL = TCP)(HOST = localhost)(PORT = 1524))
-       (CONNECT_DATA =
-         (SERVICE_NAME = base11)
-         (INSTANCE_NAME = base11)
-       )
-  )
-
-DEVSHP =
-  (DESCRIPTION =
-       (ADDRESS = (PROTOCOL = TCP)(HOST = DEVSHPDB01.overstock.com)(PORT = 1521))
-       (CONNECT_DATA =
-         (SERVICE_NAME = devshp)
-         (INSTANCE_NAME = devshp)
-       )
-  )
-
-TESTSHP =
-  (DESCRIPTION =
-    (ADDRESS = (PROTOCOL = TCP)(HOST = testshpdb01)(PORT = 1521))
-    (ADDRESS = (PROTOCOL = TCP)(HOST = testshpdb02)(PORT = 1521))
-    (CONNECT_DATA =
-      (SERVER = DEDICATED)
-      (SERVICE_NAME = testshp)
-    )
-  )
-
-DSS =
-  (DESCRIPTION =
-       (ADDRESS = (PROTOCOL = TCP)(HOST = lgdssshpdb01)(PORT = 1521))
-       (CONNECT_DATA =
-         (SERVICE_NAME = lgdssshp)
-       )
-  )
-
-DEVWEBDB=(DESCRIPTION =
-    (ADDRESS_LIST =
-      (ADDRESS = (PROTOCOL = TCP)(HOST = devwebdb01)(PORT = 1521))
-    )
-    (CONNECT_DATA =
-      (SERVICE_NAME = devwebdb.overstock.com)
-    )
-  )  
-  
