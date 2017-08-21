@@ -13,6 +13,7 @@
 {########## YOU MUST CHANGE THIS URL TO YOUR LOCAL MIRROR ####### #}
 {%- set mirror  = 'http://download.oracle.com/otn/linux/instantclient/' + release + major + minor + '10/' %}
 
+{%- set default_ldconfig     = 'no' %}
 {%- set default_tnsnames_url = 'undefined' %}
 {%- set default_archive_type = 'zip' %}
 {%- set default_prefix       = '/usr/share/oracle/' + ora_release + '/' %}
@@ -47,6 +48,7 @@
 {%- set default_real_home = default_prefix + sqlplus_name + '/' %}
 {%- set default_realcmd   = default_real_home + '/sqlplus' %}
 
+{%- set ldconfig          = g.get('ldconfig', p.get('ldconfig', default_ldconfig )) %}
 {%- set tnsnames_url      = g.get('tnsnames_url', p.get('tnsnames_url', default_tnsnames_url )) %}
 {%- set prefix            = g.get('prefix', p.get('prefix', default_prefix )) %}
 {%- set dl_opts           = g.get('dl_opts', p.get('dl_opts', default_dl_opts)) %}
@@ -71,6 +73,7 @@
                           'orahome'          : orahome,
                           'dl_opts'          : dl_opts,
                           'archive_type'     : archive_type,
+                          'ldconfig'         : ldconfig,
                           'tnsnames_url'     : tnsnames_url,
                           'prefix'           : prefix,
                           'sqlplus_real_home': sqlplus_real_home,
