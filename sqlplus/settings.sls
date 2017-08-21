@@ -9,7 +9,7 @@
 {%- set minor        = g.get('minor', p.get('minor', '0')) %}
 {%- set version      = g.get('version', p.get('version', release + '.' + major + '.' + minor + '.1.0' )) %}
 {%- set sqlplus_name = 'instantclient' %}
-{%- set suffix               = '-linux.x64' + '-' + version + '.' + default_archive_type %}
+{%- set suffix       = '-linux.x64' + '-' + version + '.' + default_archive_type %}
 
 {########## YOU MUST CHANGE THIS URL TO YOUR LOCAL MIRROR ####### #}
 {%- set mirror  = 'http://download.oracle.com/otn/linux/instantclient/' + release + major + minor + '10/' %}
