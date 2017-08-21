@@ -1,19 +1,21 @@
 {% set p  = salt['pillar.get']('sqlplus', {}) %}
 {% set g  = salt['grains.get']('sqlplus', {}) %}
 
-{%- set oracle_release  = g.get('oracle_release', p.get('oracle_release', '12_2')) %}
-{%- set orahome = salt['grains.get']('orahome', salt['pillar.get']('orahome', '/opt/oracle/' + oracle_release + '/')) %}
+{%- set ora_release  = g.get('ora_release', p.get('ora_release', '12_2')) %}
+{%- set orahome = salt['grains.get']('orahome', salt['pillar.get']('orahome', '/opt/oracle/' + ora_release + '/')) %}
 
 {%- set release      = g.get('release', p.get('release', '12')) %}
-{%- set minor        = g.get('minor', p.get('minor', '2')) %}
-{%- set version      = g.get('version', p.get('version', release + '.' + minor + '.0.1.0' )) %}
+{%- set major        = g.get('major', p.get('major', '2')) %}
+{%- set minor        = g.get('minor', p.get('minor', '0')) %}
+{%- set version      = g.get('version', p.get('version', release + '.' + major + '.' + minor + '.1.0' )) %}
 {%- set sqlplus_name = 'instantclient' %}
 
 {########## YOU MUST CHANGE THIS URL TO YOUR LOCAL MIRROR ####### #}
-{%- set mirror  = 'http://download.oracle.com/otn/linux/instantclient/' + release + minor + '010/' %}
+{%- set mirror  = 'http://download.oracle.com/otn/linux/instantclient/' + release + major + minor + '10/' %}
 
+{%- set default_tnsnames_url = 'undefined' %}
 {%- set default_archive_type = 'zip' %}
-{%- set default_prefix       = '/usr/share/oracle/' + oracle_release + '/' %}
+{%- set default_prefix       = '/usr/share/oracle/' + ora_release + '/' %}
 {%- set suffix               = '-linux.x64' + '-' + version + '.' + default_archive_type %}
 {%- set default_source_url1  = mirror + 'instantclient-basic' + suffix %}
 {%- set default_source_url2  = mirror + 'instantclient-sqlplus' + suffix %}
@@ -40,22 +42,24 @@
 {%- endif %}
 
 {%- set default_alt_priority = '30' %}
-{%- set default_dl_opts      = ' -s ' %}
-{%- set default_symlink      = '/usr/bin/sqlplus' %}
-{%- set default_real_home    = default_prefix + sqlplus_name + '/' %}
-{%- set default_realcmd      = default_real_home + '/sqlplus' %}
+{%- set default_dl_opts   = ' -s ' %}
+{%- set default_symlink   = '/usr/bin/sqlplus' %}
+{%- set default_real_home = default_prefix + sqlplus_name + '/' %}
+{%- set default_realcmd   = default_real_home + '/sqlplus' %}
 
-{%- set prefix               = g.get('prefix', p.get('prefix', default_prefix )) %}
-{%- set dl_opts              = g.get('dl_opts', p.get('dl_opts', default_dl_opts)) %}
-{%- set archive_type         = g.get('archive_type', p.get('archive_type', default_archive_type )) %}
-{%- set sqlplus_symlink      = g.get('symlink', p.get('symlink', default_symlink )) %}
-{%- set sqlplus_real_home    = g.get('real_home', p.get('real_home', default_real_home )) %}
-{%- set sqlplus_unpackdir    = g.get('unpackdir', p.get('unpackdir', prefix + sqlplus_name + '_' + oracle_release )) %}
-{%- set sqlplus_realcmd      = g.get('realcmd', p.get('realcmd', default_realcmd )) %}
-{%- set alt_priority         = g.get('alt_priority', p.get('alt_priority', default_alt_priority )) %}
+{%- set tnsnames_url      = g.get('tnsnames_url', p.get('tnsnames_url', default_tnsnames_url )) %}
+{%- set prefix            = g.get('prefix', p.get('prefix', default_prefix )) %}
+{%- set dl_opts           = g.get('dl_opts', p.get('dl_opts', default_dl_opts)) %}
+{%- set archive_type      = g.get('archive_type', p.get('archive_type', default_archive_type )) %}
+{%- set sqlplus_symlink   = g.get('symlink', p.get('symlink', default_symlink )) %}
+{%- set sqlplus_real_home = g.get('real_home', p.get('real_home', default_real_home )) %}
+{%- set sqlplus_unpackdir = g.get('unpackdir', p.get('unpackdir', prefix + sqlplus_name + '_' + ora_release )) %}
+{%- set sqlplus_realcmd   = g.get('realcmd', p.get('realcmd', default_realcmd )) %}
+{%- set alt_priority      = g.get('alt_priority', p.get('alt_priority', default_alt_priority )) %}
 
 {%- set sqlplus = {} %}
 {%- do sqlplus.update( {  'release'          : release,
+                          'major'            : major,
                           'minor'            : minor,
                           'version'          : version,
                           'source_url1'      : source_url1,
@@ -67,6 +71,7 @@
                           'orahome'          : orahome,
                           'dl_opts'          : dl_opts,
                           'archive_type'     : archive_type,
+                          'tnsnames_url'     : tnsnames_url,
                           'prefix'           : prefix,
                           'sqlplus_real_home': sqlplus_real_home,
                           'sqlplus_symlink'  : sqlplus_symlink,
