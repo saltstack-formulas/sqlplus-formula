@@ -9,7 +9,6 @@
 {%- set minor        = g.get('minor', p.get('minor', '0')) %}
 {%- set version      = g.get('version', p.get('version', release + '.' + major + '.' + minor + '.1.0' )) %}
 {%- set sqlplus_name = 'instantclient' %}
-{%- set suffix       = '-linux.x64' + '-' + version + '.' + default_archive_type %}
 
 {########## YOU MUST CHANGE THIS URL TO YOUR LOCAL MIRROR ####### #}
 {%- set mirror  = 'http://download.oracle.com/otn/linux/instantclient/' + release + major + minor + '10/' %}
@@ -17,6 +16,7 @@
 {%- set default_ldconfig     = 'no' %}
 {%- set default_tnsnames_url = 'undefined' %}
 {%- set default_archive_type = 'zip' %}
+{%- set suffix               = '-linux.x64' + '-' + version + '.' + default_archive_type %}
 {%- set default_prefix       = '/usr/share/oracle/' + orarelease + '/' %}
 {%- set default_source_url1  = mirror + 'instantclient-basic' + suffix %}
 {%- set default_source_url2  = mirror + 'instantclient-sqlplus' + suffix %}
