@@ -1,4 +1,4 @@
-% set p  = salt['pillar.get']('sqlplus', {}) %}
+{% set p  = salt['pillar.get']('sqlplus', {}) %}
 {% set g  = salt['grains.get']('sqlplus', {}) %}
 
 {%- set orarelease  = g.get('orarelease', p.get('orarelease', '12_2')) %}
