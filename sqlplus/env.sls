@@ -68,13 +68,3 @@ sqlplus-alt-set:
   - onchanges:
     - alternatives: sqlplus-alt-install
 
-create /etc/tnsnames.ora:
-  file.managed:
-    - name: /etc/tnsnames.ora
-    - backup: 'saltbak'
-    - source: salt://sqlplus/files/tnsnames.ora
-    - mode: 644
-    - user: root
-    - group: root
-    - if_missing: /etc/tnsnames.ora
-
