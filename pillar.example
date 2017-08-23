@@ -8,16 +8,20 @@ sqlplus:
   source_url1: http://download.oracle.com/otn/linux/instantclient/122010/instantclient-basic-linux.x64-12.2.0.1.0.zip
   source_url2: http://download.oracle.com/otn/linux/instantclient/122010/instantclient-devel-linux.x64-12.2.0.1.0.zip
   source_url3: http://download.oracle.com/otn/linux/instantclient/122010/instantclient-sqlplus-linux.x64-12.2.0.1.0.zip
-  source_hash1: http://download.oracle.com/otn/linux/instantclient/122010/instantclient-basic-linux.x64-12.2.0.1.0.zip.sha256
-  source_hash2: http://download.oracle.com/otn/linux/instantclient/122010/instantclient-devel-linux.x64-12.2.0.1.0.zip.sha256
-  source_hash3: http://download.oracle.com/otn/linux/instantclient/122010/instantclient-sqlplus-linux.x64-12.2.0.1.0.zip.sha256
-  dl_opts:  --no-check-certificate --no-cookies --header "Cookie: oraclelicense=accept-securebackup-cookie"
+  ##source_hash1: http://download.oracle.com/otn/linux/instantclient/122010/instantclient-basic-linux.x64-12.2.0.1.0.zip.sha256
+  ##source_hash2: http://download.oracle.com/otn/linux/instantclient/122010/instantclient-devel-linux.x64-12.2.0.1.0.zip.sha256
+  ##source_hash3: http://download.oracle.com/otn/linux/instantclient/122010/instantclient-sqlplus-linux.x64-12.2.0.1.0.zip.sha256
+  source_hash1: md5=d9639092e3dea2e023272e52e2bd42da
+  source_hash2: md5=93ae87df1d08bb31da57443a416edc8c
+  source_hash3: md5=077fa2f215185377ccb670de9ca1678f
+  dl_opts:
   ldconfig: no
   tnsnames_url: undefined
   prefix: /usr/share/oracle/12_2
-  sqlplus_symlink: /usr/bin/sqlplus
-  sqlplus_realcmd: /opt/oracle/12_2/sqlplus/bin/sqlplus
+  real_home: /usr/share/oracle/12_2/instantclient
+  symlink: /usr/bin/sqlplus
+  realcmd: /opt/oracle/12_2/sqlplus/bin/sqlplus
   archive_type: zip
-  sqlplus_unpackdir: /usr/share/oracle/12_2/instantclient_12_2
-  sqlplus_real_home: /usr/share/oracle/12_2/instantclient
+  unpackdir: /usr/share/oracle/12_2/instantclient_12_2
   alt_priority: 30
+
