@@ -28,7 +28,7 @@ sqlplus-oracle-conf:
 sqlplus-ld-so-conf:
   file.append:
     - name: /etc/ld.so.conf.d/oracle.conf:
-    - text: {{ sqlplus.sqlplus_real_home }}/client64/lib
+    - text: {{ sqlplus.real_home }}/client64/lib
 
 sqlplus-ldconfig:
   cmd.run
@@ -40,13 +40,13 @@ sqlplushome-alt-install:
   alternatives.install:
     - name: sqlplus-home
     - link: {{ sqlplus.orahome }}/sqlplus
-    - path: {{ sqlplus.sqlplus_real_home }}
+    - path: {{ sqlplus.real_home }}
     - priority: {{ sqlplus.alt_priority }}
 
 sqlplushome-alt-set:
   alternatives.set:
   - name: sqlplus-home
-  - path: {{ sqlplus.sqlplus_real_home }}
+  - path: {{ sqlplus.real_home }}
   - onchanges:
     - alternatives: sqlplushome-alt-install
 
@@ -54,8 +54,8 @@ sqlplushome-alt-set:
 sqlplus-alt-install:
   alternatives.install:
     - name: sqlplus
-    - link: {{ sqlplus.sqlplus_symlink }}
-    - path: {{ sqlplus.sqlplus_realcmd }}
+    - link: {{ sqlplus.symlink }}
+    - path: {{ sqlplus.realcmd }}
     - priority: {{ sqlplus.alt_priority }}
     - onchanges:
       - alternatives: sqlplushome-alt-install
@@ -64,7 +64,7 @@ sqlplus-alt-install:
 sqlplus-alt-set:
   alternatives.set:
   - name: sqlplus
-  - path: {{ sqlplus.sqlplus_realcmd }}
+  - path: {{ sqlplus.realcmd }}
   - onchanges:
     - alternatives: sqlplus-alt-install
 

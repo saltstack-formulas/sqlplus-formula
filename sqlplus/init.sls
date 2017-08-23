@@ -80,7 +80,7 @@ sqlplus-download-instantclient-devel-archive:
 
 sqlplus-unpack-instantclient-basic-archive:
   file.absent:
-    - name: {{ sqlplus.sqlplus_real_home }}
+    - name: {{ sqlplus.real_home }}
   archive.extracted:
     - name: {{ sqlplus.prefix }}
     - source: file://{{ archive_file1 }}
@@ -88,7 +88,7 @@ sqlplus-unpack-instantclient-basic-archive:
     - source_hash: {{ sqlplus.source_hash1 }}
     {%- endif %}
     {% if grains['saltversioninfo'] < [2016, 11, 0] %}
-    - if_missing: {{ sqlplus.sqlplus_realcmd }}
+    - if_missing: {{ sqlplus.realcmd }}
     {% endif %}
     - archive_format: {{ sqlplus.archive_type }}
     - require:
@@ -104,7 +104,7 @@ sqlplus-unpack-instantclient-sqlplus-archive:
     - source_hash: {{ sqlplus.source_hash2 }}
     {%- endif %}
     {% if grains['saltversioninfo'] < [2016, 11, 0] %}
-    - if_missing: {{ sqlplus.sqlplus_realcmd }}
+    - if_missing: {{ sqlplus.realcmd }}
     {% endif %}
     - archive_format: {{ sqlplus.archive_type }}
     - onchanges:
@@ -118,7 +118,7 @@ sqlplus-unpack-instantclient-devel-archive:
     - source_hash: {{ sqlplus.source_hash3 }}
     {%- endif %}
     {% if grains['saltversioninfo'] < [2016, 11, 0] %}
-    - if_missing: {{ sqlplus.sqlplus_realcmd }}
+    - if_missing: {{ sqlplus.realcmd }}
     {% endif %}
     - archive_format: {{ sqlplus.archive_type }}
     - onchanges:
@@ -126,14 +126,14 @@ sqlplus-unpack-instantclient-devel-archive:
 
 sqlplus-update-home-symlink:
   cmd.run:
-    - name: mv {{ sqlplus.sqlplus_unpackdir }} {{ sqlplus.sqlplus_real_home }}
+    - name: mv {{ sqlplus.unpackdir }} {{ sqlplus.real_home }}
     - onchanges:
       - archive: sqlplus-unpack-instantclient-basic-archive
       - archive: sqlplus-unpack-instantclient-sqlplus-archive
       - archive: sqlplus-unpack-instantclient-devel-archive
   file.symlink:
     - name: {{ sqlplus.orahome }}/sqlplus
-    - target: {{ sqlplus.sqlplus_real_home }}
+    - target: {{ sqlplus.real_home }}
     - force: True
     - require:
       - cmd: sqlplus-update-home-symlink
