@@ -1,5 +1,5 @@
-orahome: /opt/oracle/12_2/
-orarelease: 12_2
+oracle_home: /opt/oracle/12_2/
+oracle_release: 12_2
 sqlplus:
   release: 12
   major: 2
@@ -18,9 +18,9 @@ sqlplus:
   ldconfig: no
   tnsnames_url: undefined
   prefix: /usr/share/oracle/12_2
-  real_home: /usr/share/oracle/12_2/instantclient
   symlink: /usr/bin/sqlplus
-  realcmd: /opt/oracle/12_2/sqlplus/bin/sqlplus
+  real_home: /usr/share/oracle/12_2/instantclient
+  realcmd: /usr/share/oracle/12_2/instantclient/bin/sqlplus
   archive_type: zip
   unpackdir: /usr/share/oracle/12_2/instantclient_12_2
   alt_priority: 30
