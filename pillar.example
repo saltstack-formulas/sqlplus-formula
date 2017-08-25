@@ -14,7 +14,7 @@ sqlplus:
   source_hash1: md5=d9639092e3dea2e023272e52e2bd42da
   source_hash2: md5=93ae87df1d08bb31da57443a416edc8c
   source_hash3: md5=077fa2f215185377ccb670de9ca1678f
-  dl_opts:
+  dl_opts: -s
   ldconfig: no
   tnsnames_url: undefined
   prefix: /usr/share/oracle/12_2
