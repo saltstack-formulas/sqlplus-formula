@@ -7,7 +7,7 @@
 {%- set release      = g.get('release', p.get('release', '12')) %}
 {%- set major        = g.get('major', p.get('major', '2')) %}
 {%- set minor        = g.get('minor', p.get('minor', '0')) %}
-{%- set version      = g.get('version', p.get('version', release ~ '.' ~ major ~ '.' ~ minor ~ '.1.0' )) %}
+{%- set version      = g.get('version', p.get('version', release ~ '.' ~ major ~ '.' ~ minor ~ '.1.0' ) %}
 {%- set name         = 'instantclient' %}
 
 {########## YOU MUST CHANGE THIS URL TO YOUR LOCAL MIRROR ####### #}
