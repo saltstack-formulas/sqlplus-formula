@@ -1,6 +1,8 @@
 oracle_home: /opt/oracle/12_2/
 oracle_release: 12_2
+#default_user
 sqlplus:
+  #default_user
   release: 12
   major: 2
   minor: 0

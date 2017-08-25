@@ -13,6 +13,7 @@
 {########## YOU MUST CHANGE THIS URL TO YOUR LOCAL MIRROR ####### #}
 {%- set mirror  = 'http://download.oracle.com/otn/linux/instantclient/' ~ release ~ major ~ minor ~ '10/' %}
 
+{%- set default_user         = 'undefined_user' %}
 {%- set default_ldconfig     = 'no' %}
 {%- set default_tnsnames_url = 'undefined' %}
 {%- set default_archive_type = 'zip' %}
@@ -48,6 +49,7 @@
 {%- set default_real_home    = default_prefix ~ name ~ '/' %}
 {%- set default_realcmd      = default_real_home ~ '/sqlplus' %}
 
+{%- set user                 = g.get('default_user', salt['pillar.get']('default_user', p.get('default_user', default_user)) %}
 {%- set ldconfig             = g.get('ldconfig', p.get('ldconfig', default_ldconfig )) %}
 {%- set tnsnames_url         = g.get('tnsnames_url', p.get('tnsnames_url', default_tnsnames_url )) %}
 {%- set prefix               = g.get('prefix', p.get('prefix', default_prefix )) %}
@@ -67,6 +69,7 @@
                           'source_hash1'     : source_hash1,
                           'source_hash2'     : source_hash2,
                           'source_hash3'     : source_hash3,
+                          'user'             : user,
                           'ldconfig'         : ldconfig,
                           'tnsnames_url'     : tnsnames_url,
                           'prefix'           : prefix,
