@@ -2,7 +2,7 @@
 {% set g  = salt['grains.get']('sqlplus', {}) %}
 
 {%- set orarelease   = salt['pillar.get']('oracle_release', '12_2') %}
-{%- set orahome      = salt['pillar.get']('oracle_home', '/opt/oracle/' ~ orarelease ~ '/')) %}
+{%- set orahome      = salt['pillar.get']('oracle_home', '/opt/oracle/' ~ orarelease ~ '/') %}
 
 {%- set release      = g.get('release', p.get('release', '12')) %}
 {%- set major        = g.get('major', p.get('major', '2')) %}
