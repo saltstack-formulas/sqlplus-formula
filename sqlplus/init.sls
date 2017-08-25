@@ -4,9 +4,9 @@
 
 {%- if sqlplus.source_url1 is defined %}
 
-  {%- set archive_file1 = sqlplus.prefix + '/' + sqlplus.source_url1.split('/') | last %}
-  {%- set archive_file2 = sqlplus.prefix + '/' + sqlplus.source_url2.split('/') | last %}
-  {%- set archive_file3 = sqlplus.prefix + '/' + sqlplus.source_url3.split('/') | last %}
+  {%- set archive_file1 = sqlplus.prefix ~ '/' ~ sqlplus.source_url1.split('/') | last %}
+  {%- set archive_file2 = sqlplus.prefix ~ '/' ~ sqlplus.source_url2.split('/') | last %}
+  {%- set archive_file3 = sqlplus.prefix ~ '/' ~ sqlplus.source_url3.split('/') | last %}
 
 #runtime dependency
 sqlplus-libaio1:
