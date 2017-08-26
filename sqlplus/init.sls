@@ -95,6 +95,8 @@ sqlplus-unpack-instantclient-basic-archive:
       - file: sqlplus-unpack-instantclient-basic-archive
     - onchanges:
       - cmd: sqlplus-download-instantclient-basic-archive
+    - require_in:
+      - sqlplus-update-home-symlink
 
 sqlplus-unpack-instantclient-sqlplus-archive:
   archive.extracted:
@@ -109,6 +111,8 @@ sqlplus-unpack-instantclient-sqlplus-archive:
     - archive_format: {{ sqlplus.archive_type }}
     - onchanges:
       - cmd: sqlplus-download-instantclient-sqlplus-archive
+    - require_in:
+      - sqlplus-update-home-symlink
 
 sqlplus-unpack-instantclient-devel-archive:
   archive.extracted:
@@ -123,6 +127,8 @@ sqlplus-unpack-instantclient-devel-archive:
     - archive_format: {{ sqlplus.archive_type }}
     - onchanges:
       - cmd: sqlplus-download-instantclient-devel-archive
+    - require_in:
+      - sqlplus-update-home-symlink
 
 sqlplus-update-home-symlink:
   cmd.run:
