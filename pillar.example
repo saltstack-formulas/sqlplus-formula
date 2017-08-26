@@ -22,7 +22,7 @@ sqlplus:
   prefix: /usr/share/oracle/12_2
   symlink: /usr/bin/sqlplus
   real_home: /usr/share/oracle/12_2/instantclient
-  realcmd: /usr/share/oracle/12_2/instantclient/bin/sqlplus
+  realcmd: /usr/share/oracle/12_2/instantclient/sqlplus
   archive_type: zip
   unpackdir: /usr/share/oracle/12_2/instantclient_12_2
   alt_priority: 30
