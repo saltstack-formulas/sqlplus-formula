@@ -49,7 +49,7 @@
 {%- set default_real_home    = default_prefix ~ name ~ '/' %}
 {%- set default_realcmd      = default_real_home ~ '/sqlplus' %}
 
-{%- set user                 = g.get('default_user', salt['pillar.get']('default_user', p.get('default_user', default_user)) %}
+{%- set user                 = g.get('default_user', salt['pillar.get']('default_user', p.get('default_user', default_user)))%}
 {%- set ldconfig             = g.get('ldconfig', p.get('ldconfig', default_ldconfig )) %}
 {%- set tnsnames_url         = g.get('tnsnames_url', p.get('tnsnames_url', default_tnsnames_url )) %}
 {%- set prefix               = g.get('prefix', p.get('prefix', default_prefix )) %}
