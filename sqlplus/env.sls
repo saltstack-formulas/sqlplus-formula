@@ -16,7 +16,7 @@ sqlplus-config:
 sqlplus-tnsnames-ora:
   cmd.run:
     - name: curl {{ sqlplus.dl_opts }} -o /etc/tnsnames.ora '{{ sqlplus.tnsnames_url }}'
-    - runas: {{ sqlplus.user}}
+    ## runas root because /etc
     - if_missing: /etc/tnsnames.ora
 {%- endif %}
 
