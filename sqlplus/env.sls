@@ -12,10 +12,11 @@ sqlplus-config:
       orahome: {{ sqlplus.orahome }}/sqlplus
       prefix: {{ sqlplus.prefix }}
 
-{% if sqlplus.tnsnames_url != 'undefined' %}
+{% if sqlplus.user != 'undefined_user' and sqlplus.tnsnames_url != 'undefined' %}
 sqlplus-tnsnames-ora:
   cmd.run:
     - name: curl {{ sqlplus.dl_opts }} -o /etc/tnsnames.ora '{{ sqlplus.tnsnames_url }}'
+    - runas: {{ sqlplus.user}}
     - if_missing: /etc/tnsnames.ora
 {%- endif %}
 
