@@ -44,16 +44,20 @@
 {%- endif %}
 
 {%- set default_alt_priority = '30' %}
-{%- set default_dl_opts  = ' -s ' %}
-{%- set default_symlink  = '/usr/bin/sqlplus' %}
-{%- set default_realhome = default_prefix ~ '/' ~ name ~ '/' %}
-{%- set default_realcmd  = default_realhome ~ '/sqlplus' %}
+{%- set default_dl_opts     = ' -s ' %}
+{%- set default_dl_retries  = '1' %}
+{%- set default_dl_interval = '60' %}
+{%- set default_symlink     = '/usr/bin/sqlplus' %}
+{%- set default_realhome    = default_prefix ~ '/' ~ name ~ '/' %}
+{%- set default_realcmd     = default_realhome ~ '/sqlplus' %}
 
 {%- set user         = g.get('default_user', salt['pillar.get']('default_user', p.get('default_user', default_user)))%}
 {%- set ldconfig     = g.get('ldconfig', p.get('ldconfig', default_ldconfig )) %}
 {%- set tnsnames_url = g.get('tnsnames_url', p.get('tnsnames_url', default_tnsnames_url )) %}
 {%- set prefix       = g.get('prefix', p.get('prefix', default_prefix )) %}
 {%- set dl_opts      = g.get('dl_opts', p.get('dl_opts', default_dl_opts)) %}
+{%- set dl_retries   = g.get('dl_retries', p.get('dl_retries', default_dl_retries)) %}
+{%- set dl_interval  = g.get('dl_interval', p.get('dl_interval', default_dl_interval)) %}
 {%- set archive_type = g.get('archive_type', p.get('archive_type', default_archive_type )) %}
 {%- set symlink      = g.get('symlink', p.get('symlink', default_symlink )) %}
 {%- set realhome     = g.get('realhome', p.get('realhome', default_realhome )) %}
@@ -74,6 +78,8 @@
                           'tnsnames_url'     : tnsnames_url,
                           'prefix'           : prefix,
                           'dl_opts'          : dl_opts,
+                          'dl_retries'       : dl_retries,
+                          'dl_interval'      : dl_interval,
                           'archive_type'     : archive_type,
                           'realhome'         : realhome,
                           'symlink'          : symlink,

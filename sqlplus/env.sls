@@ -18,6 +18,11 @@ sqlplus-tnsnames-ora:
     - name: curl {{ sqlplus.dl_opts }} -o /etc/tnsnames.ora '{{ sqlplus.tnsnames_url }}'
     - runas: root
     - if_missing: /etc/tnsnames.ora
+    {% if grains['saltversioninfo'] >= [2017, 7, 0] %}
+    - retry:
+        attempts: {{ sqlplus.dl_retries }}
+        interval: {{ sqlplus.dl_interval }}
+    {% endif %}
 {%- endif %}
 
 {%if sqlplus.ldconfig == 'yes' %}

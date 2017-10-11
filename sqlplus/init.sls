@@ -32,6 +32,11 @@ sqlplus-download-instantclient-basic-archive:
     - name: curl {{ sqlplus.dl_opts }} -o '{{ archive_file1 }}' '{{ sqlplus.source_url1 }}'
     - require:
       - file: sqlplus-install-dir
+    {% if grains['saltversioninfo'] >= [2017, 7, 0] %}
+    - retry:
+        attempts: {{ sqlplus.dl_retries }}
+        interval: {{ sqlplus.dl_interval }}
+    {% endif %}
   {% if grains['saltversioninfo'] <= [2016, 11, 6] and sqlplus.source_hash1 %}
     # See: https://github.com/saltstack/salt/pull/41914 ensure hashchk in older salt.
   module.run:
@@ -49,6 +54,11 @@ sqlplus-download-instantclient-sqlplus-archive:
     - name: curl {{ sqlplus.dl_opts }} -o '{{ archive_file2 }}' '{{ sqlplus.source_url2 }}'
     - require:
       - file: sqlplus-install-dir
+    {% if grains['saltversioninfo'] >= [2017, 7, 0] %}
+    - retry:
+        attempts: {{ sqlplus.dl_retries }}
+        interval: {{ sqlplus.dl_interval }}
+    {% endif %}
  {% if grains['saltversioninfo'] <= [2016, 11, 6] and sqlplus.source_hash2 %}
     # See: https://github.com/saltstack/salt/pull/41914 ensure hashchk in older salt.
   module.run:
@@ -66,6 +76,11 @@ sqlplus-download-instantclient-devel-archive:
     - name: curl {{ sqlplus.dl_opts }} -o '{{ archive_file3 }}' '{{ sqlplus.source_url3 }}'
     - require:
       - file: sqlplus-install-dir
+    {% if grains['saltversioninfo'] >= [2017, 7, 0] %}
+    - retry:
+        attempts: {{ sqlplus.dl_retries }}
+        interval: {{ sqlplus.dl_interval }}
+    {% endif %}
  {% if grains['saltversioninfo'] <= [2016, 11, 6] and sqlplus.source_hash3 %}
     # See: https://github.com/saltstack/salt/pull/41914 ensure hashchk in older salt.
   module.run:
