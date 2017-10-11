@@ -28,38 +28,38 @@
 {%- set default_source_hash2 = 'md5=93ae87df1d08bb31da57443a416edc8c' %}
 {%- set default_source_hash3 = 'md5=077fa2f215185377ccb670de9ca1678f' %}
 
-{%- set source_url1          = g.get('source_url1', p.get('source_url1', default_source_url1 )) %}
+{%- set source_url1    = g.get('source_url1', p.get('source_url1', default_source_url1 )) %}
 {%- if source_url1 == default_source_url1 %}
-  {%- set source_url2        = default_source_url2 %}
-  {%- set source_url3        = default_source_url3 %}
-  {%- set source_hash1       = default_source_hash1 %}
-  {%- set source_hash2       = default_source_hash2 %}
-  {%- set source_hash3       = default_source_hash3 %}
+  {%- set source_url2  = default_source_url2 %}
+  {%- set source_url3  = default_source_url3 %}
+  {%- set source_hash1 = default_source_hash1 %}
+  {%- set source_hash2 = default_source_hash2 %}
+  {%- set source_hash3 = default_source_hash3 %}
 {%- else %}
-  {%- set source_url2        = g.get('source_url2', p.get('source_url2', default_source_url2 )) %}
-  {%- set source_url3        = g.get('source_url3', p.get('source_url3', default_source_url3 )) %}
-  {%- set source_hash1       = g.get('source_hash1', p.get('source_hash1', default_source_hash1 )) %}
-  {%- set source_hash2       = g.get('source_hash2', p.get('source_hash2', default_source_hash2 )) %}
-  {%- set source_hash3       = g.get('source_hash3', p.get('source_hash3', default_source_hash3 )) %}
+  {%- set source_url2  = g.get('source_url2', p.get('source_url2', default_source_url2 )) %}
+  {%- set source_url3  = g.get('source_url3', p.get('source_url3', default_source_url3 )) %}
+  {%- set source_hash1 = g.get('source_hash1', p.get('source_hash1', default_source_hash1 )) %}
+  {%- set source_hash2 = g.get('source_hash2', p.get('source_hash2', default_source_hash2 )) %}
+  {%- set source_hash3 = g.get('source_hash3', p.get('source_hash3', default_source_hash3 )) %}
 {%- endif %}
 
 {%- set default_alt_priority = '30' %}
-{%- set default_dl_opts      = ' -s ' %}
-{%- set default_symlink      = '/usr/bin/sqlplus' %}
-{%- set default_real_home    = default_prefix ~ name ~ '/' %}
-{%- set default_realcmd      = default_real_home ~ '/sqlplus' %}
+{%- set default_dl_opts  = ' -s ' %}
+{%- set default_symlink  = '/usr/bin/sqlplus' %}
+{%- set default_realhome = default_prefix ~ '/' ~ name ~ '/' %}
+{%- set default_realcmd  = default_realhome ~ '/sqlplus' %}
 
-{%- set user                 = g.get('default_user', salt['pillar.get']('default_user', p.get('default_user', default_user)))%}
-{%- set ldconfig             = g.get('ldconfig', p.get('ldconfig', default_ldconfig )) %}
-{%- set tnsnames_url         = g.get('tnsnames_url', p.get('tnsnames_url', default_tnsnames_url )) %}
-{%- set prefix               = g.get('prefix', p.get('prefix', default_prefix )) %}
-{%- set dl_opts              = g.get('dl_opts', p.get('dl_opts', default_dl_opts)) %}
-{%- set archive_type         = g.get('archive_type', p.get('archive_type', default_archive_type )) %}
-{%- set symlink              = g.get('symlink', p.get('symlink', default_symlink )) %}
-{%- set real_home            = g.get('real_home', p.get('real_home', default_real_home )) %}
-{%- set unpackdir            = g.get('unpackdir', p.get('unpackdir', prefix ~ name ~ '_' ~ orarelease )) %}
-{%- set realcmd              = g.get('realcmd', p.get('realcmd', default_realcmd )) %}
-{%- set alt_priority         = g.get('alt_priority', p.get('alt_priority', default_alt_priority )) %}
+{%- set user         = g.get('default_user', salt['pillar.get']('default_user', p.get('default_user', default_user)))%}
+{%- set ldconfig     = g.get('ldconfig', p.get('ldconfig', default_ldconfig )) %}
+{%- set tnsnames_url = g.get('tnsnames_url', p.get('tnsnames_url', default_tnsnames_url )) %}
+{%- set prefix       = g.get('prefix', p.get('prefix', default_prefix )) %}
+{%- set dl_opts      = g.get('dl_opts', p.get('dl_opts', default_dl_opts)) %}
+{%- set archive_type = g.get('archive_type', p.get('archive_type', default_archive_type )) %}
+{%- set symlink      = g.get('symlink', p.get('symlink', default_symlink )) %}
+{%- set realhome     = g.get('realhome', p.get('realhome', default_realhome )) %}
+{%- set unpackdir    = g.get('unpackdir', p.get('unpackdir', prefix ~ name ~ '_' ~ orarelease )) %}
+{%- set realcmd      = g.get('realcmd', p.get('realcmd', default_realcmd )) %}
+{%- set alt_priority = g.get('alt_priority', p.get('alt_priority', default_alt_priority )) %}
 
 {%- set sqlplus = {} %}
 {%- do sqlplus.update( {  'orahome'          : orahome,
@@ -75,7 +75,7 @@
                           'prefix'           : prefix,
                           'dl_opts'          : dl_opts,
                           'archive_type'     : archive_type,
-                          'real_home'        : real_home,
+                          'realhome'         : realhome,
                           'symlink'          : symlink,
                           'realcmd'          : realcmd,
                           'unpackdir'        : unpackdir,

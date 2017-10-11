@@ -80,7 +80,7 @@ sqlplus-download-instantclient-devel-archive:
 
 sqlplus-unpack-instantclient-basic-archive:
   file.absent:
-    - name: {{ sqlplus.real_home }}
+    - name: {{ sqlplus.realhome }}
   archive.extracted:
     - name: {{ sqlplus.prefix }}
     - source: file://{{ archive_file1 }}
@@ -132,14 +132,14 @@ sqlplus-unpack-instantclient-devel-archive:
 
 sqlplus-update-home-symlink:
   cmd.run:
-    - name: mv {{ sqlplus.unpackdir }} {{ sqlplus.real_home }}
+    - name: mv {{ sqlplus.unpackdir }} {{ sqlplus.realhome }}
     - onchanges:
       - archive: sqlplus-unpack-instantclient-basic-archive
       - archive: sqlplus-unpack-instantclient-sqlplus-archive
       - archive: sqlplus-unpack-instantclient-devel-archive
   file.symlink:
     - name: {{ sqlplus.orahome }}/sqlplus
-    - target: {{ sqlplus.real_home }}
+    - target: {{ sqlplus.realhome }}
     - force: True
     - require:
       - cmd: sqlplus-update-home-symlink
