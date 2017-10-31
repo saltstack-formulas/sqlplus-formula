@@ -1,0 +1,29 @@
+#Default Look Dictionary
+sqlplus:
+  prefix: /usr/share/oracle/
+  tmpdir: /tmp/oracletmp
+  symlink: /usr/bin/sqlplus
+  command: /sqlplus
+  homes: /home
+
+  oracle:
+    uri: http://download.oracle.com/otn/linux/instantclient
+    #Oracle release numbering: https://docs.oracle.com/cd/B28359_01/server.111/b28310/dba004.htm
+    release: 12_2
+    version: 12.2.0.1.0
+
+  dl:
+    opts: -s -L
+    interval: 30
+    retries: 1
+    pkgs: ('instantclient-basic', 'instantclient-sqlplus', 'instantclient-sdk')
+    suffix: zip
+
+  alt:
+    priority: 170
+
+  prefs:
+    user: undefined_user
+    ldconfig: no
+    tnsnamesurl: undefined
+    tnsnamesfile: undefined

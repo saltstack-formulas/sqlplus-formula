@@ -1,0 +1,40 @@
+# -*- coding: utf-8 -*-
+# vim: ft=jinja
+
+# Start with defaults from defs.yaml 
+{% import_yaml 'sqlplus/defaults.yaml' as defs %}
+
+{% set version = salt['pillar.get']('sqlplus:oracle:version', defs.sqlplus.oracle.version ) %}
+{% set release = version.split('.')[0] ~ '_' ~ version.split('.')[1] %} 
+{% set osmap = salt['grains.filter_by']({
+
+    'Linux'  : { salt['grains.filter_by']({
+                         'x86'   : { 'arch': 'linux', },
+                         'x86_64': { 'arch': 'linux.x64', }, }, grain='cpuarch'),
+
+                 'prefix': prefix ~ release,
+    },
+    'Windows': { salt['grains.filter_by']({
+                         'x86'   : { 'arch': 'windows.nt', },
+                         'x86_64': { 'arch': 'windows.x64', }, }, grain='cpuarch'),
+
+                 'prefix': 'C:\\oracle\\' ~ release ~ '\\',
+                 'homes' : 'C:\\Users\\',
+                 'command': '\\sqlplus',
+    },
+    'Darwin' : { 'homes': '/Users/',
+                 'arch': 'macosx.x64',
+    },
+  }, grain='kernel', merge=defs, default='Linux')
+%}
+
+# Merge osmap onto defaults before merging pillars
+{% do defs.sqlplus.oracle.update(osmap) %}
+{% set sqlplus = salt['pillar.get']( 'sqlplus', default=defs.sqlplus, merge=True) %}
+{% do sqlplus.oracle.update({ 'release' : release,
+                              'uri'     : sqlplus.oracle.uri ~ sqlplus.oracle.version|replace('.','') ~ '/',
+                              'symhome' : sqlplus.oracle.symhome ~ sqlplus.oracle.release,
+                              'realhome': sqlplus.prefix ~ 'instantclient',
+                              'realcmd' : sqlplus.prefix ~ 'instantclient' ~ sqlplus.command  })
+%}
+

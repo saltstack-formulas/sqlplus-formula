@@ -1,18 +1,14 @@
-=============
-sqlplus-formula
-=============
+========
+sqlplus
+========
 
-This formula will set up and configure Oracle SqlPlus client sourced from URL.
+Formula to download and configure the SQLPLUS software from Oracle.
 
-.. note1::
-
-   The SOURCE URI in settings.sls must be updated with your internal mirror.
-
-.. note2::
+.. note::
 
     See the full `Salt Formulas installation and usage instructions
     <http://docs.saltstack.com/en/latest/topics/development/conventions/formulas.html>`_.
-
+    
 Available states
 ================
 
@@ -20,18 +16,27 @@ Available states
     :local:
 
 ``sqlplus``
----------
+------------
+Downloads the archives from uri specified as pillar, unpack locally, and installs on the Operating System. On Linux, the PATH is set for all system users by adding software profile to /etc/profile.d/ directory.
 
-Downloads zip archives from **sqlplus:source_url** and unpacks them.
-- instantclient-basic-linux.x64
-- instantclient-sdk-linux.x64
-- instantclient-devel-linux.x64
+.. note::
 
-``sqlplus.env``
--------------
+This formula installs the version of sqlplus defined as default. Can be overridden by version pillar.
 
-Full support for linux alternatives system. Add /etc/profile.d/sqlplus.sh to include SQLPLUS_HOME,
-LD_LIBRARY_PATH, and SQLPLUS_HOME/bin. Create a tnsnames.ora file.
+``sqlplus.alternatives``
+------------
+Full support for debian alternatives in supported Linux distributions (i.e. not Archlinux, Windows, MacOS). 
+
+.. note::
+
+The linux-alternatives 'priority' pillar value must be updated for each newly installed release/editions.
+
+
+``sqlplus.developer``
+------------
+Optionally download a 'tnsnames.ora' file from url/share and save into 'user' (pillar) home directory.
+
 
 Please see the pillar.example for configuration.
 
+Tested on Linux (Ubuntu, Fedora, Arch, and Suse), MacOS. Not verified on Windows OS.
