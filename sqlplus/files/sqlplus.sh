@@ -1,4 +1,4 @@
-export ORACLE_HOME={{ prefix }}
-export SQLPLUS_HOME={{ orahome }}/instantclient
+export ORACLE_HOME={{ home }}
+export SQLPLUS_HOME=${ORACLE_HOME}}/instantclient
 export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:${SQLPLUS_HOME}
 export PATH=${PATH}:${ORACLE_HOME}:${SQLPLUS_HOME}

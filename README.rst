@@ -17,26 +17,25 @@ Available states
 
 ``sqlplus``
 ------------
-Downloads the archives from uri specified as pillar, unpack locally, and installs on the Operating System. On Linux, the PATH is set for all system users by adding software profile to /etc/profile.d/ directory.
+Downloads the archives from uri specified as pillar, unpack locally, and installs on the Operating System.
 
 .. note::
 
 This formula installs the version of sqlplus defined as default. Can be overridden by version pillar.
-
-``sqlplus.alternatives``
-------------
-Full support for debian alternatives in supported Linux distributions (i.e. not Archlinux, Windows, MacOS). 
-
-.. note::
-
-The linux-alternatives 'priority' pillar value must be updated for each newly installed release/editions.
-
 
 ``sqlplus.developer``
 ------------
 Optionally download a 'tnsnames.ora' file from url/share and save into 'user' (pillar) home directory.
 
 
-Please see the pillar.example for configuration.
+``sqlplus.linuxenv``
+------------
+On Linux, the PATH is set for all system users by adding software profile to /etc/profile.d/ directory. Full support for debian alternatives in supported Linux distributions (i.e. not Archlinux).
 
+.. note::
+
+The linux-alternatives 'priority' pillar value must be updated for each newly installed release/editions.
+
+
+Please see the pillar.example for configuration.
 Tested on Linux (Ubuntu, Fedora, Arch, and Suse), MacOS. Not verified on Windows OS.

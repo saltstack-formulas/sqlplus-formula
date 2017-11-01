@@ -13,7 +13,7 @@ sqlplus-create-extract-dirs:
   file.directory:
     - names:
       - '{{ sqlplus.tmpdir }}'
-      - '{{ sqlplus.oracle.realhome }}/{{ sqlplus.oracle.release }}_tmp'
+      - '{{ sqlplus.oracle.realhome }}'
   {% if grains.os not in ('MacOS', 'Windows') %}
     - user: root
     - group: root
@@ -22,14 +22,13 @@ sqlplus-create-extract-dirs:
     - clean: True
     - makedirs: True
 
-{% for pkg in sqlplus.dl.pkgs %}
+{% for pkg in sqlplus.oracle.pkgs %}
 
-  {% set src_url  = sw.dl.uri ~ pkg ~ '-' ~ sw.arch ~ '-' ~ sw.oracle.version ~ '.' ~ sw.dl.suffix %}
-  {% set src_hash = salt['cmd.run']('curl -s {0}.sha256'.format( src_url )).split(' ')[0] %}
+  {% set url = sqlplus.oracle.uri ~ 'instantclient-' ~ pkg ~ '-' ~ sqlplus.arch ~ '-' ~ sqlplus.oracle.version ~ '.' ~ sqlplus.dl.suffix %}
 
 sqlplus-extract-{{ pkg }}:
   cmd.run:
-    - name: curl {{sqlplus.dl.opts}} -o {{sqlplus.tmpdir}}/{{ pkg }}.{{sqlplus.dl.suffix}}' {{ src_url }}
+    - name: curl {{sqlplus.dl.opts}} -o '{{sqlplus.tmpdir}}/{{ pkg }}.{{sqlplus.dl.suffix}}' {{ url }}
       {% if grains['saltversioninfo'] >= [2017, 7, 0] %}
     - retry:
         attempts: {{ sqlplus.dl.retries }}
@@ -37,84 +36,35 @@ sqlplus-extract-{{ pkg }}:
       {% endif %}
     - require:
       - sqlplus-create-extract-dirs
+    - require_in:
+      - archive: sqlplus-extract-{{ pkg }}
+  {% if sqlplus.dl.skip_hashcheck in ('None', 'False', 'false', 'FALSE') %}
   module.run:
     - name: file.check_hash
     - path: '{{ sqlplus.tmpdir }}/{{ pkg }}.{{ sqlplus.dl.suffix }}'
-    - file_hash: {{ src_hash }}
+    - file_hash: {{ sqlplus.oracle.md5[ pkg ] }}
     - onchanges:
       - cmd: sqlplus-extract-{{ pkg }}
     - require_in:
       - archive: sqlplus-extract-{{ pkg }}
+  {% endif %}
   archive.extracted:
-    - source: 'file://{{ sqlplus.tmpdir }}/{{ pkg }}.{{ sqlplus.dl.suffix }}'
-    - name: '{{ sqlplus.oracle.realhome }}/{{ sqlplus.oracle.release }}_tmp'
+    - source: 'file://{{ sqlplus.tmpdir }}{{ pkg }}.{{ sqlplus.dl.suffix }}'
+    - name: '{{ sqlplus.prefix }}'
     - archive_format: {{ sqlplus.dl.suffix }}
        {% if grains['saltversioninfo'] >= [2016, 11, 0] %}
     - enforce_toplevel: False
        {% endif %}
- 
-sqlplus-install-{{ pkg }}:
-  cmd.run:
-    - name: mv '{{ sqlplus.oracle.realhome }}/{{ sqlplus.oracle.release }}_tmp/*' {{ sqlplus.oracle.realhome }}
-    - onchanges:
-      - archive: sqlplus-extract-{{ pkg }}
     - require_in:
-      - file: sqlplus-remove-extract-dirs
-
+      - file: sqlplus-complete-instantclient
+ 
 {% endfor %}
 
-sqlplus-remove-extract-dirs:
+sqlplus-complete-instantclient:
   file.absent:
-    - names:
-      - '{{ sqlplus.tmpdir }}'
-      - '{{ sqlplus.oracle.realhome }}/{{ sqlplus.oracle.release }}_tmp'
-
-{% if grains.os == 'Linux' %}
-
-# Update system profile with PATH
-sqlplus-linux-profile:
-  file.managed:
-    - name: /etc/profile.d/sqlplus.sh
-    - source: salt://sqlplus/files/sqlplus.sh
-    - template: jinja
-    - mode: 644
-    - user: root
-    - group: root
-    - context:
-      sqlplus_home: '{{ sqlplus.oracle.symhome }}'
+    - name: {{ sqlplus.oracle.realhome }}
+  cmd.run:
+    - name: mv '{{ sqlplus.prefix }}instantclient_12_2' '{{ sqlplus.oracle.realhome }}'
     - require:
-      - file: sqlplus-remove-extract-dirs
-
-sqlplus-update-home-symlink:
-  file.symlink:
-    - name: '{{ sqlplus.oracle.symhome }}'
-    - target: '{{ sqlplus.oracle.realhome }}'
-    - force: True
-    - require:
-      - file: sqlplus-linux-profile
-
-  {% if sqlplus.prefs.ldconfig == 'yes' %}
-sqlplus-create-oracle-conf:
-  file.managed:
-    - name: /etc/ld.so.conf.d/oracle.conf
-    - mkdirs: True
-    - require:
-      - file: sqlplus-update-home-symlink
-
-sqlplus-ld-so-conf:
-  file.append:
-    - name: /etc/ld.so.conf.d/oracle.conf:
-    - text: {{ sqlplus.alt.realhome }}/client64/lib
-    - require:
-      - file: sqlplus-create-oracle-conf
-
-sqlplus-ldconfig:
-  cmd.run
-    - name: ldconfig
-    - require:
-      - file: sqlplus-ld-so-conf
-
-  {% endif %}
-
-{% endif %}
+      - file: sqlplus-complete-instantclient
 

@@ -1,15 +1,24 @@
 sqlplus:
   oracle:
-    #Change the following to match your release and mirror
+    home: /opt/oracle/12_2
+    #You must set valid uri
+    uri: http://download.example.com/oracle/instantclient/
     version: 12.2.0.1.0
-    uri: http://download.oracle.com/otn/linux/instantclient
-  alt:
-    #Important: Increase priority for every version installed
+    md5:
+      #linux.x64 package cksums
+      basic: md5=d9639092e3dea2e023272e52e2bd42da
+      sqlplus: md5=93ae87df1d08bb31da57443a416edc8c
+      sdk: md5=077fa2f215185377ccb670de9ca1678f
+      ##macos.x64 package cksums
+      #basic: md5=537713092a123b3f43d6f1a2be0fe53f
+      #sdk: md5=6791925e182d534a8143847263157d8f'
+      #sqlplus: md5=0c23f99617f6c2d11ac6df1704c7cd85
+  linux:
+    #Increase priority for every version installed
     priority: 190
   dl:
     retries: 1
     interval: 30
   prefs:
-    user: undefined_user
     tnsnamesurl:
     tnsnamesfile:

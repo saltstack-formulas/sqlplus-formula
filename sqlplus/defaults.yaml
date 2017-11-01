@@ -1,29 +1,33 @@
 #Default Look Dictionary
 sqlplus:
-  prefix: /usr/share/oracle/
-  tmpdir: /tmp/oracletmp
-  symlink: /usr/bin/sqlplus
+  prefix: /usr/share/oracle
+  tmpdir: /tmp/oracletmp/
   command: /sqlplus
-  homes: /home
+  arch: linux.x64
 
   oracle:
-    uri: http://download.oracle.com/otn/linux/instantclient
-    #Oracle release numbering: https://docs.oracle.com/cd/B28359_01/server.111/b28310/dba004.htm
-    release: 12_2
+    home: /opt/oracle/12_2
+    #Override 'uri' (pillar) to avoid oracle login
+    uri: http://download.oracle.com/otn/linux/instantclient/122010/
+    #See oracle numbering: https://docs.oracle.com/cd/B28359_01/server.111/b28310/dba004.htm
     version: 12.2.0.1.0
+    #See available packages: http://www.oracle.com/partners/campaign/index-100365.html
+    pkgs: ['basic', 'sdk', 'sqlplus']
 
   dl:
     opts: -s -L
+    #'unpack_opts z' not working (unzip complains "caution: not extracting; -d ignored").
     interval: 30
     retries: 1
-    pkgs: ('instantclient-basic', 'instantclient-sqlplus', 'instantclient-sdk')
     suffix: zip
+    skip_hashcheck: False
 
-  alt:
-    priority: 170
+  linux:
+    symlink: /usr/local/bin/sqlplus
+    altpriority: 170
+    ldconfig: no
 
   prefs:
     user: undefined_user
-    ldconfig: no
     tnsnamesurl: undefined
     tnsnamesfile: undefined
