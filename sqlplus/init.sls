@@ -1,14 +1,5 @@
 {% from "sqlplus/map.jinja" import sqlplus with context %}
 
-#runtime dependency
-sqlplus-libaio1:
-  pkg.installed:
-    {% if grains.os in ('Ubuntu', 'Suse', 'SUSE') %}
-    - name: libaio1
-    {%- else %}
-    - name: libaio
-    {%- endif %}
-
 sqlplus-create-extract-dirs:
   file.directory:
     - names:
