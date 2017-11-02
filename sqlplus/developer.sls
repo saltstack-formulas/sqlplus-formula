@@ -2,6 +2,8 @@
 
 {% if sqlplus.prefs.tnsnamesurl not in (None, 'undefined') %}
 
+  {% if grains.os not in ('Windows') %}
+
 sqlplus-tnsnames-ora:
   cmd.run:
     - name: curl {{ sqlplus.dl.opts }} -o /etc/tnsnames.ora '{{ sqlplus.prefs.tnsnamesurl }}'
@@ -12,6 +14,8 @@ sqlplus-tnsnames-ora:
         attempts: {{ sqlplus.dl.retries }}
         interval: {{ sqlplus.dl.interval }}
     {% endif %}
+
+  {% endif %}
 
 {%- endif %}
 
