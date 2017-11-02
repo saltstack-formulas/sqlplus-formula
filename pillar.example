@@ -15,7 +15,7 @@ sqlplus:
       #sqlplus: md5=0c23f99617f6c2d11ac6df1704c7cd85
   linux:
     #Increase priority for every version installed
-    priority: 190
+    altpriority: 190
   dl:
     retries: 1
     interval: 30

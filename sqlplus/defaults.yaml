@@ -28,6 +28,5 @@ sqlplus:
     ldconfig: no
 
   prefs:
-    user: undefined_user
     tnsnamesurl: undefined
     tnsnamesfile: undefined

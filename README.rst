@@ -25,7 +25,7 @@ This formula installs the version of sqlplus defined as default. Can be overridd
 
 ``sqlplus.developer``
 ------------
-Optionally download a 'tnsnames.ora' file from url/share and save into 'user' (pillar) home directory.
+Optionally retrieve 'tnsnames.ora' file from url/share into 'user' (pillar) home directory for export/import support.
 
 
 ``sqlplus.linuxenv``
