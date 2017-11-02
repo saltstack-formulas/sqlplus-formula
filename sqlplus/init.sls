@@ -1,173 +1,70 @@
-{%- from 'sqlplus/settings.sls' import sqlplus with context %}
-
-{#- require a source_url - there is no default download location for sqlplus #}
-
-{%- if sqlplus.source_url1 is defined %}
-
-  {%- set archive_file1 = sqlplus.prefix ~ '/' ~ sqlplus.source_url1.split('/') | last %}
-  {%- set archive_file2 = sqlplus.prefix ~ '/' ~ sqlplus.source_url2.split('/') | last %}
-  {%- set archive_file3 = sqlplus.prefix ~ '/' ~ sqlplus.source_url3.split('/') | last %}
+{% from "sqlplus/map.jinja" import sqlplus with context %}
 
 #runtime dependency
 sqlplus-libaio1:
   pkg.installed:
-    {%- if salt['grains.get']('os') == 'Ubuntu' or salt['grains.get']('os') == 'SUSE' %}
+    {% if grains.os in ('Ubuntu', 'Suse', 'SUSE') %}
     - name: libaio1
     {%- else %}
     - name: libaio
     {%- endif %}
 
-sqlplus-install-dir:
+sqlplus-create-extract-dirs:
   file.directory:
     - names:
-      - {{ sqlplus.prefix }}
-      - {{ sqlplus.orahome }}
+      - '{{ sqlplus.tmpdir }}'
+      - '{{ sqlplus.oracle.realhome }}'
+  {% if grains.os not in ('MacOS', 'Windows') %}
     - user: root
     - group: root
     - mode: 755
+  {% endif %}
+    - clean: True
     - makedirs: True
 
-sqlplus-download-instantclient-basic-archive:
+{% for pkg in sqlplus.oracle.pkgs %}
+
+  {% set url = sqlplus.oracle.uri ~ 'instantclient-' ~ pkg ~ '-' ~ sqlplus.arch ~ '-' ~ sqlplus.oracle.version ~ '.' ~ sqlplus.dl.suffix %}
+
+sqlplus-extract-{{ pkg }}:
   cmd.run:
-    - name: curl {{ sqlplus.dl_opts }} -o '{{ archive_file1 }}' '{{ sqlplus.source_url1 }}'
-    - require:
-      - file: sqlplus-install-dir
-    {% if grains['saltversioninfo'] >= [2017, 7, 0] %}
+    - name: curl {{sqlplus.dl.opts}} -o '{{sqlplus.tmpdir}}/{{ pkg }}.{{sqlplus.dl.suffix}}' {{ url }}
+      {% if grains['saltversioninfo'] >= [2017, 7, 0] %}
     - retry:
-        attempts: {{ sqlplus.dl_retries }}
-        interval: {{ sqlplus.dl_interval }}
-    {% endif %}
-  {% if grains['saltversioninfo'] <= [2016, 11, 6] and sqlplus.source_hash1 %}
-    # See: https://github.com/saltstack/salt/pull/41914 ensure hashchk in older salt.
+        attempts: {{ sqlplus.dl.retries }}
+        interval: {{ sqlplus.dl.interval }}
+      {% endif %}
+    - require:
+      - sqlplus-create-extract-dirs
+    - require_in:
+      - archive: sqlplus-extract-{{ pkg }}
+  {% if sqlplus.dl.skip_hashcheck in ('None', 'False', 'false', 'FALSE') %}
   module.run:
     - name: file.check_hash
-    - path: {{ archive_file1 }}
-    - file_hash: {{ sqlplus.source_hash1 }}
+    - path: '{{ sqlplus.tmpdir }}/{{ pkg }}.{{ sqlplus.dl.suffix }}'
+    - file_hash: {{ sqlplus.oracle.md5[ pkg ] }}
     - onchanges:
-      - cmd: sqlplus-download-instantclient-basic-archive
+      - cmd: sqlplus-extract-{{ pkg }}
     - require_in:
-      - archive: sqlplus-unpack-instantclient-basic-archive
-  {%- endif %}
-
-sqlplus-download-instantclient-sqlplus-archive:
-  cmd.run:
-    - name: curl {{ sqlplus.dl_opts }} -o '{{ archive_file2 }}' '{{ sqlplus.source_url2 }}'
-    - require:
-      - file: sqlplus-install-dir
-    {% if grains['saltversioninfo'] >= [2017, 7, 0] %}
-    - retry:
-        attempts: {{ sqlplus.dl_retries }}
-        interval: {{ sqlplus.dl_interval }}
-    {% endif %}
- {% if grains['saltversioninfo'] <= [2016, 11, 6] and sqlplus.source_hash2 %}
-    # See: https://github.com/saltstack/salt/pull/41914 ensure hashchk in older salt.
-  module.run:
-    - name: file.check_hash
-    - path: {{ archive_file2 }}
-    - file_hash: {{ sqlplus.source_hash2 }}
-    - onchanges:
-      - cmd: sqlplus-download-instantclient-sqlplus-archive
+      - archive: sqlplus-extract-{{ pkg }}
+  {% endif %}
+  archive.extracted:
+    - source: 'file://{{ sqlplus.tmpdir }}{{ pkg }}.{{ sqlplus.dl.suffix }}'
+    - name: '{{ sqlplus.prefix }}'
+    - archive_format: {{ sqlplus.dl.suffix }}
+       {% if grains['saltversioninfo'] >= [2016, 11, 0] %}
+    - enforce_toplevel: False
+       {% endif %}
     - require_in:
-      - archive: sqlplus-unpack-instantclient-sqlplus-archive
- {%- endif %}
+      - file: sqlplus-complete-instantclient
+ 
+{% endfor %}
 
-sqlplus-download-instantclient-devel-archive:
-  cmd.run:
-    - name: curl {{ sqlplus.dl_opts }} -o '{{ archive_file3 }}' '{{ sqlplus.source_url3 }}'
-    - require:
-      - file: sqlplus-install-dir
-    {% if grains['saltversioninfo'] >= [2017, 7, 0] %}
-    - retry:
-        attempts: {{ sqlplus.dl_retries }}
-        interval: {{ sqlplus.dl_interval }}
-    {% endif %}
- {% if grains['saltversioninfo'] <= [2016, 11, 6] and sqlplus.source_hash3 %}
-    # See: https://github.com/saltstack/salt/pull/41914 ensure hashchk in older salt.
-  module.run:
-    - name: file.check_hash
-    - path: {{ archive_file3 }}
-    - file_hash: {{ sqlplus.source_hash3 }}
-    - onchanges:
-      - cmd: sqlplus-download-instantclient-devel-archive
-    - require_in:
-      - archive: sqlplus-unpack-instantclient-devel-archive
- {%- endif %}
-
-sqlplus-unpack-instantclient-basic-archive:
+sqlplus-complete-instantclient:
   file.absent:
-    - name: {{ sqlplus.realhome }}
-  archive.extracted:
-    - name: {{ sqlplus.prefix }}
-    - source: file://{{ archive_file1 }}
-    {%- if sqlplus.source_hash1 and grains['saltversioninfo'] > [2016, 11, 6] %}
-    - source_hash: {{ sqlplus.source_hash1 }}
-    {%- endif %}
-    {% if grains['saltversioninfo'] < [2016, 11, 0] %}
-    - if_missing: {{ sqlplus.realcmd }}
-    {% endif %}
-    - archive_format: {{ sqlplus.archive_type }}
-    - require:
-      - file: sqlplus-unpack-instantclient-basic-archive
-    - onchanges:
-      - cmd: sqlplus-download-instantclient-basic-archive
-    - require_in:
-      - sqlplus-update-home-symlink
-
-sqlplus-unpack-instantclient-sqlplus-archive:
-  archive.extracted:
-    - name: {{ sqlplus.prefix }}
-    - source: file://{{ archive_file2 }}
-    {%- if sqlplus.source_hash2 and grains['saltversioninfo'] > [2016, 11, 6] %}
-    - source_hash: {{ sqlplus.source_hash2 }}
-    {%- endif %}
-    {% if grains['saltversioninfo'] < [2016, 11, 0] %}
-    - if_missing: {{ sqlplus.realcmd }}
-    {% endif %}
-    - archive_format: {{ sqlplus.archive_type }}
-    - onchanges:
-      - cmd: sqlplus-download-instantclient-sqlplus-archive
-    - require_in:
-      - sqlplus-update-home-symlink
-
-sqlplus-unpack-instantclient-devel-archive:
-  archive.extracted:
-    - name: {{ sqlplus.prefix }}
-    - source: file://{{ archive_file3 }}
-    {%- if sqlplus.source_hash3 and grains['saltversioninfo'] > [2016, 11, 6] %}
-    - source_hash: {{ sqlplus.source_hash3 }}
-    {%- endif %}
-    {% if grains['saltversioninfo'] < [2016, 11, 0] %}
-    - if_missing: {{ sqlplus.realcmd }}
-    {% endif %}
-    - archive_format: {{ sqlplus.archive_type }}
-    - onchanges:
-      - cmd: sqlplus-download-instantclient-devel-archive
-    - require_in:
-      - sqlplus-update-home-symlink
-
-sqlplus-update-home-symlink:
+    - name: {{ sqlplus.oracle.realhome }}
   cmd.run:
-    - name: mv {{ sqlplus.unpackdir }} {{ sqlplus.realhome }}
-    - onchanges:
-      - archive: sqlplus-unpack-instantclient-basic-archive
-      - archive: sqlplus-unpack-instantclient-sqlplus-archive
-      - archive: sqlplus-unpack-instantclient-devel-archive
-  file.symlink:
-    - name: {{ sqlplus.orahome }}/sqlplus
-    - target: {{ sqlplus.realhome }}
-    - force: True
+    - name: mv '{{ sqlplus.prefix }}instantclient_12_2' '{{ sqlplus.oracle.realhome }}'
     - require:
-      - cmd: sqlplus-update-home-symlink
+      - file: sqlplus-complete-instantclient
 
-sqlplus-remove-instantclient-archives:
-  file.absent:
-    - names:
-      - {{ archive_file1 }}
-      - {{ archive_file2 }}
-      - {{ archive_file3 }}
-    - onchanges:
-      - archive: sqlplus-unpack-instantclient-basic-archive
-      - archive: sqlplus-unpack-instantclient-sqlplus-archive
-      - archive: sqlplus-unpack-instantclient-devel-archive
-
-{%- endif %}

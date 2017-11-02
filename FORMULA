@@ -1,0 +1,8 @@
+name: sqlplus
+os: MacOS, Windows, Linux
+os_family: RedHat, Debian, Suse, FreeBSD, MacOS, Windows
+version: 201710
+release: 1.1
+minimum_version: 2016.3
+summary: Formula for installing sqlplus
+description: Formula for installing SQLPLUS for Oracle Database
