@@ -14,8 +14,9 @@ sqlplus:
       #sdk: md5=6791925e182d534a8143847263157d8f'
       #sqlplus: md5=0c23f99617f6c2d11ac6df1704c7cd85
   linux:
-    #Increase priority for every version installed
-    altpriority: 190
+    #Enable Debian alternatives feature by setting nonzero 'altpriority' value here.
+    #Increase same value on each subsequent software installation.
+    #altpriority: 170
   dl:
     retries: 1
     interval: 30

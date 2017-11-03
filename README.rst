@@ -34,8 +34,7 @@ On Linux, the PATH is set for all system users by adding software profile to /et
 
 .. note::
 
-The linux-alternatives 'priority' pillar value must be updated for each newly installed release/editions.
-
+Enable Debian alternatives by setting nonzero 'altpriority' pillar value; otherwise feature is disabled.
 
 Please see the pillar.example for configuration.
 Tested on Linux (Ubuntu, Fedora, Arch, and Suse), MacOS. Not verified on Windows OS.

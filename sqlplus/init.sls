@@ -4,8 +4,9 @@ sqlplus-create-extract-dirs:
   file.directory:
     - names:
       - '{{ sqlplus.tmpdir }}'
-      - '{{ sqlplus.oracle.realhome }}'
+      - '{{ sqlplus.oracle.home }}'
   {% if grains.os not in ('MacOS', 'Windows') %}
+      - '{{ sqlplus.oracle.realhome }}'
     - user: root
     - group: root
     - mode: 755

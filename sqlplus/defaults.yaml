@@ -23,9 +23,10 @@ sqlplus:
     skip_hashcheck: False
 
   linux:
-    symlink: /usr/local/bin/sqlplus
-    altpriority: 170
     ldconfig: no
+    symlink: /usr/local/bin/sqlplus
+    #debian alternatives is disabled by default. Activated via pillar value.
+    altpriority: 0
 
   prefs:
     tnsnamesurl: undefined
