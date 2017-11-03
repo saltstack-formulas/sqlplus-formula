@@ -58,9 +58,9 @@ sqlplus-ldconfig:
 
   {% endif %}
 
-## Debian Alternatives ##
-
-  {% if grains.os_family not in ('Arch') %}
+  ## Debian Alternatives ##
+  {% if sqlplus.linux.altpriority > 0 %}
+     {% if grains.os_family not in ('Arch') %}
 
 # Add swhome to alternatives system
 sqlplus-home-alt-install:
@@ -100,6 +100,7 @@ sqlplus-alt-set:
     - onchanges:
       - alternatives: sqlplus-alt-install
 
+     {% endif %}
   {% endif %}
 
 {% endif %}
