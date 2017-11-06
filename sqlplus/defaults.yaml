@@ -20,7 +20,7 @@ sqlplus:
     interval: 30
     retries: 1
     suffix: zip
-    skip_hashcheck: False
+    skip_hashcheck:
 
   linux:
     ldconfig: no

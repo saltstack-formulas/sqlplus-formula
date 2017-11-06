@@ -30,7 +30,7 @@ sqlplus-extract-{{ pkg }}:
       - sqlplus-create-extract-dirs
     - require_in:
       - archive: sqlplus-extract-{{ pkg }}
-  {% if sqlplus.dl.skip_hashcheck in ('None', 'False', 'false', 'FALSE') %}
+  {% if sqlplus.dl.skip_hashcheck not in ('True', True) %}
   module.run:
     - name: file.check_hash
     - path: '{{ sqlplus.tmpdir }}/{{ pkg }}.{{ sqlplus.dl.suffix }}'
