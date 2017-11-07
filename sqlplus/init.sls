@@ -5,7 +5,7 @@ sqlplus-create-extract-dirs:
     - names:
       - '{{ sqlplus.tmpdir }}'
       - '{{ sqlplus.oracle.home }}'
-  {% if grains.os not in ('MacOS', 'Windows') %}
+  {% if grains.os not in ('MacOS', 'Windows',) %}
       - '{{ sqlplus.oracle.realhome }}'
     - user: root
     - group: root
@@ -30,7 +30,7 @@ sqlplus-extract-{{ pkg }}:
       - sqlplus-create-extract-dirs
     - require_in:
       - archive: sqlplus-extract-{{ pkg }}
-  {% if sqlplus.dl.skip_hashcheck not in ('True', True) %}
+  {% if sqlplus.dl.skip_hashcheck not in ('True', True,) %}
   module.run:
     - name: file.check_hash
     - path: '{{ sqlplus.tmpdir }}/{{ pkg }}.{{ sqlplus.dl.suffix }}'

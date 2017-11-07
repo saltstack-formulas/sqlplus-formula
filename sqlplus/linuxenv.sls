@@ -1,11 +1,11 @@
 {% from "sqlplus/map.jinja" import sqlplus with context %}
 
-{% if grains.os not in ('MacOS', 'Windows') %}
+{% if grains.os not in ('MacOS', 'Windows',) %}
 
 #runtime dependency
 sqlplus-libaio1:
   pkg.installed:
-    {% if grains.os in ('Ubuntu', 'Suse', 'SUSE') %}
+    {% if grains.os in ('Ubuntu', 'Suse', 'SUSE',) %}
     - name: libaio1
     {%- else %}
     - name: libaio
@@ -60,7 +60,7 @@ sqlplus-ldconfig:
 
   ## Debian Alternatives ##
   {% if sqlplus.linux.altpriority > 0 %}
-     {% if grains.os_family not in ('Arch') %}
+     {% if grains.os_family not in ('Arch',) %}
 
 # Add swhome to alternatives system
 sqlplus-home-alt-install:

@@ -1,8 +1,8 @@
 {% from "sqlplus/map.jinja" import sqlplus with context %}
 
-{% if sqlplus.prefs.tnsnamesurl not in (None, 'undefined') %}
+{% if sqlplus.prefs.tnsnamesurl not in (None, 'undefined',) %}
 
-  {% if grains.os not in ('Windows') %}
+  {% if grains.os not in ('Windows',) %}
 
 sqlplus-tnsnames-ora:
   cmd.run:
