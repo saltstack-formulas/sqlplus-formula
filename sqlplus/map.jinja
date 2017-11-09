@@ -6,46 +6,53 @@
 
 {% set version = salt['pillar.get']('sqlplus:oracle:version', defs.sqlplus.oracle.version ) %}
 {% set release = version.split('.')[0] ~ '_' ~ version.split('.')[1] %} 
-{% set osmap = salt['grains.filter_by']({
 
-    'Linux'  : { 'prefix'     : defs.sqlplus.prefix ~ '/' ~ release ~ '/',
-                 'oracle:md5' : { 'basic'    : 'md5=d9639092e3dea2e023272e52e2bd42da',
-                                  'sdk'      : 'md5=077fa2f215185377ccb670de9ca1678f',
-                                  'sqlplus'  : 'md5=93ae87df1d08bb31da57443a416edc8c',
-                                  'basiclite': 'md5=b024039f518975f5a5b6473130c74e43',
-                                  'jdbc'     : 'md5=3e6cdc6686b44160a8a5e4af0cacf5fd',
-                                  'odbc'     : 'md5=8d82fa4d6f96fae458c2af16e70a5985',
-                                  'tools'    : 'md5=5e258c34f947c31f0cf0e6322da8fe2c',
-                  },
-     },
+{% set osmap = salt['grains.filter_by']({
+    'Linux':   { 'prefix' : defs.sqlplus.prefix ~ '/' ~ release ~ '/',
+                   },
     'Windows': { 'prefix' : 'C:\\oracle\\' ~ release ~ '\\',
                  'tmpdir' : 'C:\\temp\\' ~ release ~ '\\',
                  'command': '\\sqlplus',
                  'arch'   : 'windows.x64',
-                 'oracle:md5': { 'basic'    : 'md5=958f0f3780bac4443eb6b36dc3b83c15',
-                                 'sdk'      : 'md5=3324d1cf419654495378df1fa2841f69',
-                                 'sqlplus'  : 'md5=7a6c499522a40ab49f42f96dfa7de5b7',
-                                 'basiclite': 'md5=8ce431a2837439a88f8381432411d529',
-                                 'jdbc'     : 'md5=172d3aa46ba4544c3af123bc305a354d',
-                                 'odbc'     : 'md5=30c995d80f4427b77b7e422075f94169',
-                                 'tools'    : 'md5=1cdc2fe9d9fd1fc7c546372f17d044e6',
+                   },
+    'Darwin' : { 'prefix' : defs.sqlplus.prefix ~ '/' ~ release ~ '/',
+                 'arch' : 'macos.x64',
+                   }, 
+  }, grain='kernel', default='Linux')
+%}
+
+{% set md5map = salt['grains.filter_by']({
+    'Linux'  : {  'basic'    : 'md5=d9639092e3dea2e023272e52e2bd42da',
+                  'sdk'      : 'md5=077fa2f215185377ccb670de9ca1678f',
+                  'sqlplus'  : 'md5=93ae87df1d08bb31da57443a416edc8c',
+                  'basiclite': 'md5=b024039f518975f5a5b6473130c74e43',
+                  'jdbc'     : 'md5=3e6cdc6686b44160a8a5e4af0cacf5fd',
+                  'odbc'     : 'md5=8d82fa4d6f96fae458c2af16e70a5985',
+                  'tools'    : 'md5=5e258c34f947c31f0cf0e6322da8fe2c',
+                   },
+    'Windows': { 'basic'    : 'md5=958f0f3780bac4443eb6b36dc3b83c15',
+                 'sdk'      : 'md5=3324d1cf419654495378df1fa2841f69',
+                 'sqlplus'  : 'md5=7a6c499522a40ab49f42f96dfa7de5b7',
+                 'basiclite': 'md5=8ce431a2837439a88f8381432411d529',
+                 'jdbc'     : 'md5=172d3aa46ba4544c3af123bc305a354d',
+                 'odbc'     : 'md5=30c995d80f4427b77b7e422075f94169',
+                 'tools'    : 'md5=1cdc2fe9d9fd1fc7c546372f17d044e6',
                   },
-     },
-    'Darwin' : { 'arch' : 'macosx.x64',
-                 'oracle:md5' : { 'basic'    : 'md5=537713092a123b3f43d6f1a2be0fe53f',
-                                  'sdk'      : 'md5=6791925e182d534a8143847263157d8f',
-                                  'sqlplus'  : 'md5=0c23f99617f6c2d11ac6df1704c7cd85',
-                                  'basiclite': 'md5=0a9e73d79c107f528640c4c757afefa3',
-                                  'jdbc'     : 'md5=7403db299df66e4f44c080e16417f3ba',
-                                  'odbc'     : 'md5=b5e9292c7c8936ae94bdc76228f816ad',
-                                  'tools'    : 'md5=f668d97d300dae39c9907c55a91d1a05',
+    'Darwin' : { 'basic'    : 'md5=537713092a123b3f43d6f1a2be0fe53f',
+                  'sdk'      : 'md5=6791925e182d534a8143847263157d8f',
+                  'sqlplus'  : 'md5=0c23f99617f6c2d11ac6df1704c7cd85',
+                  'basiclite': 'md5=0a9e73d79c107f528640c4c757afefa3',
+                  'jdbc'     : 'md5=7403db299df66e4f44c080e16417f3ba',
+                  'odbc'     : 'md5=b5e9292c7c8936ae94bdc76228f816ad',
+                  'tools'    : 'md5=f668d97d300dae39c9907c55a91d1a05',
                   },
-     },
   }, grain='kernel', default='Linux')
 %} 
 
 # Merge osmap onto defaults before merging pillars
-{% do defs.sqlplus.update(osmap) %}
+{% do defs.sqlplus.update( osmap ) %}
+{% do defs.sqlplus.oracle.md5.update( md5map ) %}
+
 {% set sqlplus = salt['pillar.get']( 'sqlplus', default=defs.sqlplus, merge=True) %}
 {% do sqlplus.oracle.update({ 'release' : release,
                               'uri'     : sqlplus.oracle.uri,
