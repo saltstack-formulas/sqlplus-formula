@@ -11,7 +11,6 @@ sqlplus-create-extract-dirs:
     - group: root
     - mode: 755
   {% endif %}
-    - clean: True
     - makedirs: True
 
 {% for pkg in sqlplus.oracle.pkgs %}
@@ -20,11 +19,14 @@ sqlplus-create-extract-dirs:
 
 sqlplus-extract-{{ pkg }}:
   cmd.run:
-    - name: curl {{sqlplus.dl.opts}} -o '{{ sqlplus.tmpdir }}{{ pkg }}.{{sqlplus.dl.suffix}}' {{ url }}
+    - name: curl {{sqlplus.dl.opts}} -o {{ sqlplus.tmpdir }}{{ pkg }}.{{sqlplus.dl.suffix}} {{ url }}
+    - unless: test -f {{ sqlplus.tmpdir }}{{ pkg }}.{{sqlplus.dl.suffix}}
     {% if grains['saltversioninfo'] >= [2017, 7, 0] %}
     - retry:
       attempts: {{ sqlplus.dl.retries }}
       interval: {{ sqlplus.dl.interval }}
+      until: True
+      splay: 10
     {% endif %}
     {%- if grains['saltversioninfo'] <= [2016, 11, 6] %}
       # Check local archive using hashstring for older Salt
@@ -33,7 +35,7 @@ sqlplus-extract-{{ pkg }}:
     - name: file.check_hash
     - path: '{{ sqlplus.tmpdir }}{{ pkg }}.{{ sqlplus.dl.suffix }}'
     - file_hash: {{ sqlplus.oracle.md5[ pkg ] }}
-    - onchanges:
+    - require:
       - cmd: sqlplus-extract-{{ pkg }}
     - require_in:
       - archive: sqlplus-extract-{{ pkg }}
@@ -52,16 +54,10 @@ sqlplus-extract-{{ pkg }}:
          #Check local archive using hashstring or hashurl
     - source_hash: {{ sqlplus.oracle.md5[ pkg ] }}
         {% endif %}
-    - onchanges:
+    - require:
       - cmd: sqlplus-extract-{{ pkg }}
     - require_in:
       - file: sqlplus-extract-{{ pkg }}
-  file.absent:
-    - name: '{{sqlplus.tmpdir}}/{{ pkg }}.{{sqlplus.dl.suffix}}'
-    - onchanges:
-      - archive: sqlplus-extract-{{ pkg }}
-    - require_in:
-      - sqlplus-install-instantclient  
  
 {% endfor %}
 
