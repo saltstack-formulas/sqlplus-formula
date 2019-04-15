@@ -74,6 +74,9 @@ sqlplus-home-alt-install:
     - priority: {{ sqlplus.linux.altpriority }}
     - require:
       - file: sqlplus-home-alt-install
+    - retry:
+        attempts: 2
+        until: True
 
 sqlplus-home-alt-set:
   alternatives.set:
@@ -81,6 +84,9 @@ sqlplus-home-alt-set:
     - path: {{ sqlplus.oracle.realhome }}
     - onchanges:
       - alternatives: sqlplus-home-alt-install
+    - retry:
+        attempts: 2
+        until: True
 
 # Add to alternatives system
 sqlplus-alt-install:
@@ -92,6 +98,9 @@ sqlplus-alt-install:
     - require:
       - alternatives: sqlplus-home-alt-install
       - alternatives: sqlplus-home-alt-set
+    - retry:
+        attempts: 2
+        until: True
 
 sqlplus-alt-set:
   alternatives.set:
@@ -99,6 +108,9 @@ sqlplus-alt-set:
     - path: {{ sqlplus.oracle.realcmd }}
     - onchanges:
       - alternatives: sqlplus-alt-install
+    - retry:
+        attempts: 2
+        until: True
 
      {% endif %}
   {% endif %}
