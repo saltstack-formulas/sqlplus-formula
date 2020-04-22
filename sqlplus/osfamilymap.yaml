@@ -1,0 +1,70 @@
+# -*- coding: utf-8 -*-
+# vim: ft=yaml
+#
+# Setup variables using grains['os_family'] based logic.
+# You just need to add the key:values for an `os_family` that differ
+# from `defaults.yaml`.
+# Only add an `os_family` which is/will be supported by the formula
+#
+# If you do not need to provide defaults via the `os_family` grain,
+# you will need to provide at least an empty dict in this file, e.g.
+# osfamilymap: {}
+---
+{%- if grains.os == 'MacOS' %}
+    {%- set macos_rootuser = salt['cmd.run']("stat -f '%Su' /dev/console") %}
+    {%- set macos_rootgroup = salt['cmd.run']("stat -f '%Sg' /dev/console") %}
+{%- endif %}
+
+Debian:
+  pkg:
+    libaio: libaio1
+    deps:
+      - tar
+
+RedHat:
+  pkg:
+    libaio: libaio1
+    deps:
+      - tar
+
+Suse:
+  pkg:
+    libaio: libaio1
+    deps:
+      - tar
+
+Windows:
+  flavour: windows.x64
+  command: \\sqlplus.exe
+  dir:
+    archive: C:\\Program files\\oracle\\
+    tmp: C:\\temp\\sqlplus_tmp\\
+    homes: C:\\Users
+  pkg:
+    checksums:
+      basic: md5=958f0f3780bac4443eb6b36dc3b83c15
+      sdk: md5=3324d1cf419654495378df1fa2841f69
+      sqlplus: md5=7a6c499522a40ab49f42f96dfa7de5b7
+      basiclite: md5=8ce431a2837439a88f8381432411d529
+      jdbc: md5=172d3aa46ba4544c3af123bc305a354d
+      odbc: md5=30c995d80f4427b77b7e422075f94169
+      tools: md5=1cdc2fe9d9fd1fc7c546372f17d044e6
+
+MacOS:
+  flavour: macos.x64
+  identity:
+    rootuser: {{ macos_rootuser | d('') }}
+    rootgroup: {{ macos_rootgroup | d('') }}
+    user: {{ macos_rootuser | d('') }}
+  environ_file: /etc/defaults/sqlplus.sh
+  dir:
+    homes: /Users
+  pkg:
+    checksums:
+      basic: md5=537713092a123b3f43d6f1a2be0fe53f
+      sdk: md5=6791925e182d534a8143847263157d8f
+      sqlplus: md5=0c23f99617f6c2d11ac6df1704c7cd85
+      basiclite: md5=0a9e73d79c107f528640c4c757afefa3
+      jdbc: md5=7403db299df66e4f44c080e16417f3ba
+      odbc: md5=b5e9292c7c8936ae94bdc76228f816ad
+      tools: md5=f668d97d300dae39c9907c55a91d1a05
