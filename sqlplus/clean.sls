@@ -3,10 +3,13 @@
 
     {%- if grains.kernel|lower in ('linux', 'darwin',) %}
 
+{%- set tplroot = tpldir.split('/')[0] %}
+{%- from tplroot ~ "/map.jinja" import sqlplus with context %}
+
 include:
-  - .archive
-  - .config
-  - .linuxenv
+  - .archive.clean
+  - .config.clean
+  - .linuxenv.clean
 
     {%- else %}
 
