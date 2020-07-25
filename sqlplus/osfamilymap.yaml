@@ -15,6 +15,11 @@
     {%- set macos_rootgroup = salt['cmd.run']("stat -f '%Sg' /dev/console") %}
 {%- endif %}
 
+Arch:
+  pkg:
+    deps:
+      - tar
+
 Debian:
   pkg:
     libaio: libaio1
