@@ -1,5 +1,3 @@
-.. _readme:
-
 sqlplus-formula
 ===============
 
@@ -55,7 +53,7 @@ Available states
    :local:
 
 ``sqlplus``
-^^^^^^^^^
+^^^^^^^^^^^
 
 *Meta-state (This is a state that includes other states)*.
 
@@ -64,23 +62,23 @@ manages Sqlplus configuration file and then
 configures the development environment.
 
 ``sqlplus.archive``
-^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^
 
 This state will install Sqlplus from archive only.
 
 ``sqlplus.config``
-^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^
 
 This state will configure npmrc and/or environment and has a dependency on ``sqlplus.install``
 via include list.
 
 ``sqlplus.linuxenv``
-^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^
 
 This state will install some Sqlplus linux-alternatives on GNU/Linux.
 
 ``sqlplus.clean``
-^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^
 
 *Meta-state (This is a state that includes other states)*.
 
@@ -89,19 +87,19 @@ removes the configuration file and
 then uninstalls the package.
 
 ``sqlplus.config.clean``
-^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^
 
 This state will remove the configuration of Sqlplus and has a
 dependency on ``sqlplus.package.clean`` via include list.
 
 ``sqlplus.archive.clean``
-^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^
 
 This state will remove Sqlplus package and has a dependency on
 ``sqlplus.config.clean`` via include list.
 
 ``sqlplus.linuxenv.clean``
-^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 This state will remove Sqlplus linux-alternatives on GNU/Linux.
 
